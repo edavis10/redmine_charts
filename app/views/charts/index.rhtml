@@ -1,0 +1,38 @@
+<h2><%=l(:charts_menu_label)%>
+    <span style="font-size:small">
+        | <%= link_to l(:charts_link_groups), :controller => "charts_groups" %>
+        | <%= link_to l(:charts_link_hours), :controller => "charts_hours" %>
+        | <%= link_to l(:charts_link_burndown), :controller => "charts_burndown" %>
+    </span>
+</h2>
+
+<% html_title(l(:charts_menu_label)) -%>
+
+<% content_for :header_tags do %>
+  <%= javascript_include_tag '/plugin_assets/open_flash_chart/javascripts/swfobject.js' %>
+<% end %>
+
+<div class="splitcontentleft" style="width:30%">
+    <% form_tag '#', :method => :get do %>
+      <div class="box">
+          <% if @date_condition %>
+            <p><%= l(:charts_show_last) %> <%= text_field_tag "range_steps".to_sym, params[:range_steps] ? params[:range_steps].to_sym : 10, :size => 4 %> <%= select_tag "range_in".to_sym, options_for_select(@range_in_options, params[:range_in] ? params[:range_in].to_sym : :days) %></p>
+          <% end %>
+          <% unless @grouping_options.empty? %>
+            <p><%= l(:charts_group_by) %> <%= select_tag :grouping, options_for_select(@grouping_options, params[:grouping] ? params[:grouping].to_sym : nil) %></p>
+          <% end %>
+          <% @conditions_options.each do |name,values| %>
+            <% if values.nil? %>
+              <p><%= l("charts_condition_#{name}".to_sym) %> <%= text_field_tag "conditions_#{name}".to_sym, params["conditions_#{name}".to_sym].blank? ? nil : Integer(params["conditions_#{name}".to_sym]) %></p>
+            <% else %>
+              <p><%= l("charts_condition_#{name}".to_sym) %> <%= select_tag "conditions_#{name}".to_sym, options_for_select(values, params["conditions_#{name}".to_sym] ? Integer(params["conditions_#{name}".to_sym]) : nil) %></p>
+            <% end %>
+          <% end %>
+      </div>
+      <%= submit_tag l(:charts_button) %>
+    <% end %>
+</div>
+
+<div class="splitcontentright" style="width:68%">
+    <%= @graph %>
+</div>

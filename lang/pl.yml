@@ -1,1 +1,17 @@
 charts_menu_label: Wykresy
+charts_link_groups: Udział zaraportowanych godzin
+charts_link_hours: Zaraportowane godziny
+charts_link_burndown: Burndown
+charts_show_last: Pokaż
+charts_show_last_days: dni
+charts_show_last_weeks: tygodni
+charts_show_last_months: miesięcy
+charts_group_by: Grupuj po
+charts_group_by_users: użytkownikach
+charts_group_by_activities: czynnościach
+charts_group_by_issues: zagadnieniach
+charts_condition_issue_id: Zagadnienie
+charts_condition_user_id: Użytkownik
+charts_condition_activity_id: Aktywność
+charts_condition_all: ---
+charts_button: Pokaż
