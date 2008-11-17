@@ -12,14 +12,6 @@ class ChartsGroupsController < ChartsController
     "pie"
   end
   
-  def get_grouping_options
-    [ :users, :issues, :activities ]
-  end
-  
-  def get_conditions_options
-    [ :user_id, :issue_id, :activity_id ]
-  end
-
   def get_global_hints
     l(:charts_groups_global_hint)    
   end

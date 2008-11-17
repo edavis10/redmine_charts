@@ -7,6 +7,7 @@ charts_show_last_days: dni
 charts_show_last_weeks: tygodni
 charts_show_last_months: miesięcy
 charts_group_by: Grupuj po
+charts_group_by_none: ---
 charts_group_by_users: użytkownikach
 charts_group_by_activities: czynnościach
 charts_group_by_issues: zagadnieniach
@@ -19,3 +20,8 @@ charts_button: Pokaż
 charts_groups_global_hint: "#val# z #total# godzin<br>#percent# z 100%%"
 charts_groups_hint: %s
 charts_groups_hint_others: Pozostałe
+
+charts_hours_x: 
+charts_hours_y: godziny
+charts_hours_hint: %d godzin, %d wpisów<br>
+charts_hours_hint_empty: 0 godzin<br>

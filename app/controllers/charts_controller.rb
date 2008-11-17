@@ -7,6 +7,7 @@ class ChartsController < ApplicationController
   before_filter :find_project, :only => [:index]
   
   Y_STEPS = 5
+  X_STEPS = 6
   
   COLORS = ['#DFC329', '#6363AC', '#5E4725', "#d01f3c", "#356aa0", "#C79810"]
   
@@ -49,20 +50,31 @@ class ChartsController < ApplicationController
 
     if show_x_axis
       x = XAxis.new
-      x.set_range(0,x_count,1) if x_count
-      x.set_labels(x_labels) if x_labels
+      x.set_range(0,x_count,Y_STEPS) if x_count
+      if x_labels        
+        labels = []         
+        step = (x_labels.count / Y_STEPS).to_i
+        x_labels.each_with_index do |l,i|          
+          if i % step == 0
+            labels << l
+          else 
+            labels << ""
+          end
+        end
+        x.set_labels(labels) 
+      end
       chart.x_axis = x
     end
 
     unless get_x_legend.nil?
       x_legend = XLegend.new(get_x_legend)
-      x_legend.set_style('{font-size: 13px}')
+      x_legend.set_style('{font-size: 12px}')
       chart.set_x_legend(x_legend)
     end
     
     unless get_x_legend.nil?
       y_legend = YLegend.new(get_y_legend)
-      y_legend.set_style('{font-size: 13px}')
+      y_legend.set_style('{font-size: 12px}')
       chart.set_y_legend(y_legend)
     end
     
@@ -70,6 +82,8 @@ class ChartsController < ApplicationController
   end
   
   def data_for_line
+    i = 0
+
     data_for_all do |chart,name,values|
       line = LineDot.new
       line.text = name
@@ -79,7 +93,9 @@ class ChartsController < ApplicationController
       
       vals = values.collect do |v|
         if v.is_a? Array
-          d = DotValue.new(v[0], COLORS[i % COLORS.length])
+          d = Base.new
+          d.set_value(v[0])
+          d.set_color(COLORS[i % COLORS.length])
           d.set_tooltip(v[1]) unless v[1].nil?
           d
         else
@@ -157,11 +173,11 @@ class ChartsController < ApplicationController
   end
   
   def get_grouping_options
-    []
+    [ :users, :issues, :activities ]
   end
   
   def get_conditions_options
-    []
+    [ :user_id, :issue_id, :activity_id ]
   end
   
   def count_range(range, first)
