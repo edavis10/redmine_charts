@@ -7,7 +7,7 @@ class ChartsController < ApplicationController
   before_filter :find_project, :only => [:index]
   
   Y_STEPS = 5
-  X_STEPS = 6
+  X_STEPS = 5
   
   COLORS = ['#DFC329', '#6363AC', '#5E4725', "#d01f3c", "#356aa0", "#C79810"]
   
@@ -16,7 +16,7 @@ class ChartsController < ApplicationController
     @grouping_options = get_grouping_options.collect { |i| [l("charts_group_by_#{i}".to_sym), i]  }
     @conditions_options = get_conditions_options.collect do |i|
       case i
-      when :user_id then [:user_id, User.all.collect { |u| [u.login, u.id] }.unshift([l(:charts_condition_all), 0])]      
+      when :user_id then [:user_id, Project.find(params[:project_id]).assignable_users.collect { |u| [u.login, u.id] }.unshift([l(:charts_condition_all), 0])]      
       when :issue_id then [:issue_id, nil]
       when :activity_id then [:activity_id, Enumeration.get_values("ACTI").collect { |a| [a.name.downcase, a.id] }.unshift([l(:charts_condition_all), 0])]
       end
@@ -50,10 +50,11 @@ class ChartsController < ApplicationController
 
     if show_x_axis
       x = XAxis.new
-      x.set_range(0,x_count,Y_STEPS) if x_count
+      x.set_range(0,x_count,1) if x_count
       if x_labels        
         labels = []         
-        step = (x_labels.count / Y_STEPS).to_i
+        step = (x_labels.count / X_STEPS).to_i
+        step = 1 if step == 0
         x_labels.each_with_index do |l,i|          
           if i % step == 0
             labels << l
@@ -86,7 +87,7 @@ class ChartsController < ApplicationController
 
     data_for_all do |chart,name,values|
       line = LineDot.new
-      line.text = name
+      line.text = (name == '0') ? l(:charts_group_all) : name
       line.width = 2
       line.colour = COLORS[i % COLORS.length]
       line.dot_size = 2
