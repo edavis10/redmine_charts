@@ -15,3 +15,7 @@ charts_condition_user_id: Użytkownik
 charts_condition_activity_id: Aktywność
 charts_condition_all: ---
 charts_button: Pokaż
+
+charts_groups_global_hint: "#val# z #total# godzin<br>#percent# z 100%%"
+charts_groups_hint: %s
+charts_groups_hint_others: Pozostałe

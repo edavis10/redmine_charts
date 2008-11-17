@@ -21,11 +21,11 @@
           <% unless @grouping_options.empty? %>
             <p><%= l(:charts_group_by) %> <%= select_tag :grouping, options_for_select(@grouping_options, params[:grouping] ? params[:grouping].to_sym : nil) %></p>
           <% end %>
-          <% @conditions_options.each do |name,values| %>
-            <% if values.nil? %>
-              <p><%= l("charts_condition_#{name}".to_sym) %> <%= text_field_tag "conditions_#{name}".to_sym, params["conditions_#{name}".to_sym].blank? ? nil : Integer(params["conditions_#{name}".to_sym]) %></p>
+          <% @conditions_options.each do |condition| %>
+            <% if condition[1].nil? %>
+              <p><%= l("charts_condition_#{condition[0]}".to_sym) %> <%= text_field_tag "conditions_#{condition[0]}".to_sym, params["conditions_#{condition[0]}".to_sym].blank? ? nil : Integer(params["conditions_#{condition[0]}".to_sym]) %></p>
             <% else %>
-              <p><%= l("charts_condition_#{name}".to_sym) %> <%= select_tag "conditions_#{name}".to_sym, options_for_select(values, params["conditions_#{name}".to_sym] ? Integer(params["conditions_#{name}".to_sym]) : nil) %></p>
+              <p><%= l("charts_condition_#{condition[0]}".to_sym) %> <%= select_tag "conditions_#{condition[0]}".to_sym, options_for_select(condition[1], params["conditions_#{condition[0]}".to_sym] ? Integer(params["conditions_#{condition[0]}".to_sym]) : nil) %></p>
             <% end %>
           <% end %>
       </div>
