@@ -11,9 +11,11 @@ charts_group_by_none: ---
 charts_group_by_users: użytkownikach
 charts_group_by_activities: czynnościach
 charts_group_by_issues: zagadnieniach
-charts_condition_issue_id: Zagadnienie
+charts_group_by_categories: kategoriach
+charts_condition_issue_id: "Zagadnienie #"
 charts_condition_user_id: Użytkownik
 charts_condition_activity_id: Aktywność
+charts_condition_issues.category_id: Kategoria
 charts_condition_all: ---
 charts_button: Pokaż
 charts_group_all: wszystko 
