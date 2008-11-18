@@ -33,7 +33,7 @@ class ChartsHoursController < ChartsController
   end
   
   def get_grouping_options
-    [ :none, :users, :issues, :activities ]
+    [ :none, :users, :issues, :activities, :categories ]
   end
 
   def get_hints(record = nil, grouping = nil)
@@ -61,6 +61,7 @@ class ChartsHoursController < ChartsController
     group << "issue_id" if grouping == :issues
     group << "project_id" if grouping == :projects
     group << "activity_id" if grouping == :activities  
+    group << "issues.category_id" if grouping == :categories
     group = group.join(", ")
   
     select = []
@@ -71,10 +72,11 @@ class ChartsHoursController < ChartsController
     select << "issue_id group_id" if grouping == :issues
     select << "project_id group_id" if grouping == :projects
     select << "activity_id group_id" if grouping == :activities
+    select << "issues.category_id group_id" if grouping == :categories
     select << "0 group_id" if grouping.nil? or grouping == :none
     select = select.join(", ")
   
-    rows = TimeEntry.find(:all, :select => select, :conditions => conditions, :order => :spent_on, :readonly => true, :group => group)
+    rows = TimeEntry.find(:all, :joins => "left join issues on issues.id = issue_id", :select => select, :conditions => conditions, :order => :spent_on, :readonly => true, :group => group)
   
     y_max, sets = get_sets(rows, grouping, x_count)
     

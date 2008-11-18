@@ -36,6 +36,7 @@ class ChartsGroupsController < ChartsController
     when :users then "user_id"
     when :issues then "issue_id"
     when :activities then "activity_id"
+    when :categories then "issues.category_id"
     end
   
     select = []    
@@ -44,7 +45,7 @@ class ChartsGroupsController < ChartsController
     select << "#{group} group_id"
     select = select.join(", ")
   
-    rows = TimeEntry.find(:all, :select => select, :conditions => conditions, :readonly => true, :group => group, :order => "sum(hours) desc")
+    rows = TimeEntry.find(:all, :joins => "left join issues on issues.id = issue_id", :select => select, :conditions => conditions, :readonly => true, :group => group, :order => "sum(hours) desc")
   
     sets = []
     total = 0

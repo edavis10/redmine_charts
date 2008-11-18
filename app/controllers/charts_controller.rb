@@ -19,6 +19,7 @@ class ChartsController < ApplicationController
       when :user_id then [:user_id, Project.find(params[:project_id]).assignable_users.collect { |u| [u.login, u.id] }.unshift([l(:charts_condition_all), 0])]      
       when :issue_id then [:issue_id, nil]
       when :activity_id then [:activity_id, Enumeration.get_values("ACTI").collect { |a| [a.name.downcase, a.id] }.unshift([l(:charts_condition_all), 0])]
+      when "issues.category_id".to_sym then ["issues.category_id".to_sym, IssueCategory.find_all_by_project_id(Project.find(params[:project_id]).id).collect { |c| [c.name.downcase, c.id] }.unshift([l(:charts_condition_all), 0])]
       end
     end
     @date_condition = show_date_condition
@@ -174,11 +175,11 @@ class ChartsController < ApplicationController
   end
   
   def get_grouping_options
-    [ :users, :issues, :activities ]
+    [ :users, :issues, :activities, :categories ]
   end
   
   def get_conditions_options
-    [ :user_id, :issue_id, :activity_id ]
+    [ :user_id, :issue_id, :activity_id, "issues.category_id".to_sym ]
   end
   
   def count_range(range, first)
@@ -259,9 +260,10 @@ class ChartsController < ApplicationController
   
   def group_id_to_string(group_id, grouping)
     group_name = group_id
-    group_name = User.find_by_id(group_id.to_i).login if grouping == :users
-    group_name = Issue.find_by_id(group_id.to_i).subject if grouping == :issues
-    group_name = Enumeration.find_by_id(group_id.to_i).name if grouping == :activities    
+    group_name = IssueCategory.find_by_id(group_id.to_i).name if grouping == :categories and IssueCategory.find_by_id(group_id.to_i)
+    group_name = User.find_by_id(group_id.to_i).login if grouping == :users and User.find_by_id(group_id.to_i)
+    group_name = Issue.find_by_id(group_id.to_i).subject if grouping == :issues and Issue.find_by_id(group_id.to_i)
+    group_name = Enumeration.find_by_id(group_id.to_i).name if grouping == :activities and Enumeration.find_by_id(group_id.to_i)
     group_name
   end
 
