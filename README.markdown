@@ -22,13 +22,13 @@ Run Redmine and have a fun!
 
 Shows total logged hours per issue, user, category or activity.
 
-![Screenshot of groups chart](images/groups.png)
+![Screenshot of groups chart](images/groups.png?raw=true)
 
 ### Logged hours timeline
 
 Shows logged hours per day, week or month and groups it per issue, user, category or activity. 
 
-![Screenshot of hours chart](images/hours.png)
+![Screenshot of hours chart](images/hours.png?raw=true)
 
 ## Planned charts
 
