@@ -1,26 +1,41 @@
-= Redmine Charts
+Redmine Charts
+==============
 
 Add to Redmine several useful charts which show project statistics.
 
-= Instalation
+## Instalation
 
 Download the sources and put them to your vendor/plugins folder.
 
-$ cd {REDMINE_ROOT}
-$ git clone git://github.com/mszczytowski/redmine_charts.git vendor/plugins/redmine_charts
+    $ cd {REDMINE_ROOT}
+    $ git clone git://github.com/mszczytowski/redmine_charts.git vendor/plugins/redmine_charts
 
 Install OpenFlashChart plugin. 
 
-$ ./script/plugin install git://github.com/pullmonkey/open_flash_chart.git
+    $ ./script/plugin install git://github.com/pullmonkey/open_flash_chart.git
 
 Run Redmine and have a fun!
 
-= Charts
+## Charts
 
-* groups - show sum of logged hours per issue, user or activity
-* hours - show sum of logged hours per day, week or month
-* burndown - estimated, logged and remaining hours
+### Logged hours
 
-= Planned charts
+Shows total logged hours per issue, user, category or activity.
 
-* deviation - compare estimated to logged hours per issue, user or activity
+![Screenshot of groups chart](images/groups.png)
+
+### Logged hours timeline
+
+Shows logged hours per day, week or month and groups it per issue, user, category or activity. 
+
+![Screenshot of hours chart](images/hours.png)
+
+## Planned charts
+
+### Burndown
+
+Shows estimated, logged and remaining hours.
+
+### Deviation
+
+Compares estimated to logged hours per issue, user, category or activity.
