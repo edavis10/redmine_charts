@@ -276,7 +276,7 @@ class ChartsController < ApplicationController
   end
   
   def prepare_params
-    range = {:steps => 0, :offset => 1, :in => :weeks}
+    range = {:steps => 0, :offset => 1, :in => :days}
     range[:steps] = Integer(params[:range_steps]) unless params[:range_steps].blank?
     range[:offset] = Integer(params[:range_offset]) unless params[:range_offset].blank?
     range[:in] = params[:range_in].to_sym unless params[:range_in].blank?
