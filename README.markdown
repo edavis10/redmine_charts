@@ -14,6 +14,10 @@ Install OpenFlashChart plugin.
 
     $ ./script/plugin install git://github.com/pullmonkey/open_flash_chart.git
 
+Migrate database.
+
+    $ rake db:migrate_plugins
+
 Run Redmine and have a fun!
 
 ## Charts
