@@ -30,11 +30,13 @@ Shows logged hours per day, week or month and groups it per issue, user, categor
 
 ![Screenshot of hours chart](master/images/hours.png?raw=true)
 
-## Planned charts
-
 ### Burndown
 
 Shows estimated, logged and remaining hours.
+
+![Screenshot of hours chart](master/images/burndown.png?raw=true)
+
+## Planned charts
 
 ### Deviation
 
