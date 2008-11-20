@@ -28,3 +28,10 @@ charts_hours_x:
 charts_hours_y: hours
 charts_hours_hint: %d hours, %d entries<br>
 charts_hours_hint_empty: 0 hours<br>
+
+charts_burndown_x: 
+charts_burndown_y: hours
+charts_burndown_hint: %d hours<br>%s
+charts_burndown_group_estimated: estimated hours
+charts_burndown_group_logged: logged hours
+charts_burndown_group_remaining: remaining hours
