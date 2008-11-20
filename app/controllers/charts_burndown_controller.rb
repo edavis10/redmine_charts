@@ -60,39 +60,43 @@ class ChartsBurndownController < ChartsController
     logged = []
     remaining = []
     predicted = []
+    done = []
     y_max = 0
     
     conditions_sql = "project_id = ? and (start_date <= ? or (start_date is null and created_on <= ?))"
     
     dates.each_with_index do |date,i|
       hours = Issue.sum(:estimated_hours, :conditions => [conditions_sql, conditions[:project_id], date, date])
-      estimated[i] = [hours, l(:charts_burndown_hint, hours, x_labels[i])]
+      estimated[i] = [hours, l(:charts_burndown_hint_estimated, hours, x_labels[i])]
       y_max = hours if y_max < hours
     end
     
     dates.each_with_index do |date,i|
       hours = TimeEntry.sum(:hours, :conditions => ["project_id = ? and spent_on <= ?", conditions[:project_id], date])
-      logged[i] = [hours, l(:charts_burndown_hint, hours, x_labels[i])]
+      logged[i] = [hours, l(:charts_burndown_hint_logged, hours, x_labels[i])]
       y_max = hours if y_max < hours
     end
     
     dates.each_with_index do |date,i|
       hours = estimated[i][0]
       issues = Issue.find(:all, :conditions => [conditions_sql, conditions[:project_id], date, date])
+      total_ratio = 0
       issues.each do |issue|
         history = IssueRatioHistory.first(:conditions => ["issue_id = ? and created_at <= ?", issue.id, date], :order => "created_at desc")
         ratio = history ? history.done_ratio : 0
+        total_ratio += ratio
         hours -= issue.estimated_hours.to_f * ratio.to_f / 100 if issue.estimated_hours
       end
-      remaining[i] = [hours, l(:charts_burndown_hint, hours, x_labels[i])]        
+      done[i] = issues.count > 0 ? Integer(total_ratio/issues.count) : 0
+      remaining[i] = [hours, l(:charts_burndown_hint_remaining, hours, done[i], x_labels[i])]        
     end
     
     dates.each_with_index do |date,i|
       hours = logged[i][0] + remaining[i][0]
       if hours > estimated[i][0]
-        predicted[i] = [hours, l(:charts_burndown_hint_over_estimation, hours, hours - estimated[i][0], x_labels[i]), true]
+        predicted[i] = [hours, l(:charts_burndown_hint_predicted_over_estimation, hours, hours - estimated[i][0], x_labels[i]), true]
       else
-        predicted[i] = [hours, l(:charts_burndown_hint, hours, x_labels[i])]
+        predicted[i] = [hours, l(:charts_burndown_hint_predicted, hours, x_labels[i])]
       end
       y_max = hours if y_max < hours
     end
