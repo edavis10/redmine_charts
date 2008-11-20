@@ -51,7 +51,7 @@ class ChartsHoursController < ChartsController
         range = count_range(range, first.spent_on) if first
     end
     
-    from, to, x_labels, x_count, range = prepare_range(range, "spent_on")
+    from, to, x_labels, x_count, range, dates = prepare_range(range, "spent_on")
 
     conditions[:spent_on] = (from.to_date)...(to.to_date)
 

@@ -13,17 +13,22 @@ class ChartsController < ApplicationController
   
   def index
     @graph = open_flash_chart_object("100%",400,"#{url_for(:action => nil)}/data_for_#{get_type.to_s}?#{params.to_param}",true,'/plugin_assets/open_flash_chart/')
-    @grouping_options = get_grouping_options.collect { |i| [l("charts_group_by_#{i}".to_sym), i]  }
-    @conditions_options = get_conditions_options.collect do |i|
-      case i
-      when :user_id then [:user_id, Project.find(params[:project_id]).assignable_users.collect { |u| [u.login, u.id] }.unshift([l(:charts_condition_all), 0])]      
-      when :issue_id then [:issue_id, nil]
-      when :activity_id then [:activity_id, Enumeration.get_values("ACTI").collect { |a| [a.name.downcase, a.id] }.unshift([l(:charts_condition_all), 0])]
-      when "issues.category_id".to_sym then ["issues.category_id".to_sym, IssueCategory.find_all_by_project_id(Project.find(params[:project_id]).id).collect { |c| [c.name.downcase, c.id] }.unshift([l(:charts_condition_all), 0])]
+    if show_conditions
+      @grouping_options = get_grouping_options.collect { |i| [l("charts_group_by_#{i}".to_sym), i]  }
+      @conditions_options = get_conditions_options.collect do |i|
+        case i
+        when :user_id then [:user_id, Project.find(params[:project_id]).assignable_users.collect { |u| [u.login, u.id] }.unshift([l(:charts_condition_all), 0])]      
+        when :issue_id then [:issue_id, nil]
+        when :activity_id then [:activity_id, Enumeration.get_values("ACTI").collect { |a| [a.name.downcase, a.id] }.unshift([l(:charts_condition_all), 0])]
+        when "issues.category_id".to_sym then ["issues.category_id".to_sym, IssueCategory.find_all_by_project_id(Project.find(params[:project_id]).id).collect { |c| [c.name.downcase, c.id] }.unshift([l(:charts_condition_all), 0])]
+        end
       end
+      @date_condition = show_date_condition
+      @range_in_options = [:days, :weeks, :months].collect { |i| [l("charts_show_last_#{i}".to_sym), i]  }
+      @show_conditions = true
+    else
+      @show_conditions = false
     end
-    @date_condition = show_date_condition
-    @range_in_options = [:days, :weeks, :months].collect { |i| [l("charts_show_last_#{i}".to_sym), i]  }
     render :template => "charts/index"
   end
 
@@ -169,6 +174,10 @@ class ChartsController < ApplicationController
   def show_y_axis
     false
   end
+
+  def show_conditions
+    true
+  end
   
   def show_date_condition
     false
@@ -195,7 +204,7 @@ class ChartsController < ApplicationController
     first = first.strftime(strftime_i).to_i + first.strftime('%Y').to_i
     now = Time.now.strftime(strftime_i).to_i + Time.now.strftime('%Y').to_i
     
-    range[:steps] = now - first + 2
+    range[:steps] = now - first + 4
     range[:offset] = 1
     range
   end
@@ -216,16 +225,18 @@ class ChartsController < ApplicationController
     from = times_ago(range[:steps],range[:offset],0,range[:in])
     to = times_ago(range[:steps],range[:offset]-1,0,range[:in])
 
+    dates = []
     x_labels = []
 
     range[:steps].times do |i|
       x_labels[i] = times_ago(range[:steps],range[:offset],i,range[:in]).strftime(strftime_f)
+      dates[i] = times_ago(range[:steps],range[:offset],i+1,range[:in])
     end
 
     diff = from.strftime(strftime_i).to_i + from.strftime('%Y').to_i      
     sql = "(strftime('#{strftime_i}', #{column}) + strftime('%Y', #{column}) - #{diff})"
     
-    [from, to, x_labels, range[:steps], sql]
+    [from, to, x_labels, range[:steps], sql, dates]
   end
   
   def get_sets(rows, grouping, x_count, flat = false)
