@@ -32,6 +32,8 @@ charts_hours_hint_empty: 0 godzin<br>
 charts_burndown_x: 
 charts_burndown_y: godziny
 charts_burndown_hint: %d godzin<br>%s
+charts_burndown_hint_over_estimation: %d godzin, %d ponad oszacowane<br>%s
 charts_burndown_group_estimated: oszacowane godziny
 charts_burndown_group_logged: zaraportowane godziny
 charts_burndown_group_remaining: pozostałe godziny
+charts_burndown_group_predicted: zaraportowane + pozostałe godziny

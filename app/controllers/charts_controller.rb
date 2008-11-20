@@ -102,7 +102,10 @@ class ChartsController < ApplicationController
         if v.is_a? Array
           d = Base.new
           d.set_value(v[0])
-          d.set_color(COLORS[i % COLORS.length])
+          if v[2]
+            d.dot_size = 4
+          end
+          d.set_colour(COLORS[i % COLORS.length])
           d.set_tooltip(v[1]) unless v[1].nil?
           d
         else

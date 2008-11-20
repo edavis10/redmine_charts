@@ -59,6 +59,7 @@ class ChartsBurndownController < ChartsController
     estimated = []
     logged = []
     remaining = []
+    predicted = []
     y_max = 0
     
     conditions_sql = "project_id = ? and (start_date <= ? or (start_date is null and created_on <= ?))"
@@ -86,10 +87,21 @@ class ChartsBurndownController < ChartsController
       remaining[i] = [hours, l(:charts_burndown_hint, hours, x_labels[i])]        
     end
     
+    dates.each_with_index do |date,i|
+      hours = logged[i][0] + remaining[i][0]
+      if hours > estimated[i][0]
+        predicted[i] = [hours, l(:charts_burndown_hint_over_estimation, hours, hours - estimated[i][0], x_labels[i]), true]
+      else
+        predicted[i] = [hours, l(:charts_burndown_hint, hours, x_labels[i])]
+      end
+      y_max = hours if y_max < hours
+    end
+    
     sets = {
       l(:charts_burndown_group_estimated) => estimated,
       l(:charts_burndown_group_logged) => logged,
       l(:charts_burndown_group_remaining) => remaining,
+      l(:charts_burndown_group_predicted) => predicted,      
     }
   
     [x_labels, x_count, y_max, sets]
