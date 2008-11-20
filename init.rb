@@ -1,5 +1,8 @@
 require 'redmine'
 
+# Will not work in development mode
+require_dependency 'redmine_charts/issue_patch'
+
 Redmine::Plugin.register :charts do
   name 'Charts'
   author 'Maciej Szczytowski'
