@@ -26,19 +26,19 @@ Run Redmine and have a fun!
 
 Shows total logged hours per issue, user, category or activity.
 
-![Screenshot of groups chart](http://lh3.ggpht.com/_xBL3xbJZeic/SSbctJTklLI/AAAAAAAADsg/yz4YFrJATcU/groups.png)
+![Screenshot of groups chart](http://farm4.static.flickr.com/3286/3047776453_3d6a152a25_o.png)
 
 ### Logged hours timeline
 
 Shows logged hours per day, week or month and groups it per issue, user, category or activity. 
 
-![Screenshot of hours chart](http://lh6.ggpht.com/_xBL3xbJZeic/SSbctIcT-0I/AAAAAAAADso/XftxzImpT1I/hours.png)
+![Screenshot of hours chart](http://farm4.static.flickr.com/3021/3047776559_bab9604c84_o.png)
 
 ### Burndown
 
 Shows estimated, logged and remaining hours.
 
-![Screenshot of hours chart](http://lh5.ggpht.com/_xBL3xbJZeic/SSbcsweTwFI/AAAAAAAADsY/lL7nHteCSjs/burndown.png)
+![Screenshot of hours chart](http://farm4.static.flickr.com/3163/3047776359_dec31ede64_o.png)
 
 ## Planned charts
 
