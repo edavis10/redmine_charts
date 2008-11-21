@@ -26,16 +26,16 @@ charts_groups_hint_others: Others
 
 charts_hours_x: 
 charts_hours_y: hours
-charts_hours_hint: %d hours, %d entries<br>
-charts_hours_hint_empty: 0 hours<br>
+charts_hours_hint: %d hours, %d entries
+charts_hours_hint_empty: 0 hours
 
 charts_burndown_x: 
 charts_burndown_y: hours
-charts_burndown_hint_estimated: %d hours estimated<br>%s
-charts_burndown_hint_logged: %d hours logged<br>%s
-charts_burndown_hint_remaining: %d hours to finish (%d%% work done)<br>%s
-charts_burndown_hint_predicted: total %d hours to finish<br>%s
-charts_burndown_hint_predicted_over_estimation: total %d hours to finish, %d over estimation<br>%s
+charts_burndown_hint_estimated: %d hours estimated
+charts_burndown_hint_logged: %d hours logged
+charts_burndown_hint_remaining: %d hours to finish (%d%% work done)
+charts_burndown_hint_predicted: total %d hours to finish
+charts_burndown_hint_predicted_over_estimation: total %d hours to finish, %d over estimation
 charts_burndown_group_estimated: estimated hours
 charts_burndown_group_logged: logged hours
 charts_burndown_group_remaining: remaining hours

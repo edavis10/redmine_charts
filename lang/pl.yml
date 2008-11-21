@@ -26,16 +26,16 @@ charts_groups_hint_others: Pozostałe
 
 charts_hours_x: 
 charts_hours_y: godziny
-charts_hours_hint: %d godzin, %d wpisów<br>
-charts_hours_hint_empty: 0 godzin<br>
+charts_hours_hint: %d godzin, %d wpisów
+charts_hours_hint_empty: 0 godzin
 
 charts_burndown_x: 
 charts_burndown_y: godziny
-charts_burndown_hint_estimated: oszacowano na %d godzin<br>%s
-charts_burndown_hint_logged: zaraportowano %d godzin<br>%s
-charts_burndown_hint_remaining: pozostało %d godzin (wykonano %d%% pracy)<br>%s
-charts_burndown_hint_predicted: całość zajmie %d godzin<br>%s
-charts_burndown_hint_predicted_over_estimation: całość zajmie %d godzin, przekroczenie wyniesie %d godzin<br>%s
+charts_burndown_hint_estimated: oszacowano na %d godzin
+charts_burndown_hint_logged: zaraportowano %d godzin
+charts_burndown_hint_remaining: pozostało %d godzin (wykonano %d%% pracy)
+charts_burndown_hint_predicted: całość zajmie %d godzin
+charts_burndown_hint_predicted_over_estimation: całość zajmie %d godzin, przekroczenie wyniesie %d godzin
 charts_burndown_group_estimated: oszacowane godziny
 charts_burndown_group_logged: zaraportowane godziny
 charts_burndown_group_remaining: pozostałe godziny

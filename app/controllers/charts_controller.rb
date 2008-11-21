@@ -40,7 +40,7 @@ class ChartsController < ApplicationController
     x_labels, x_count, y_max, sets = get_data(conditions, grouping, range)
     
     sets.each do |name,values|
-      yield(chart,name,values)
+      yield(chart,name,values,x_labels)
     end
     
     unless get_title.nil?
@@ -91,14 +91,17 @@ class ChartsController < ApplicationController
   def data_for_line
     i = 0
 
-    data_for_all do |chart,name,values|
+    data_for_all do |chart,name,values,labels|
       line = LineDot.new
       line.text = (name == '0') ? l(:charts_group_all) : name
       line.width = 2
       line.colour = COLORS[i % COLORS.length]
       line.dot_size = 2
-      
-      vals = values.collect do |v|
+
+      j = -1
+
+      vals = values.collect do |v|        
+        j += 1
         if v.is_a? Array
           d = Base.new
           d.set_value(v[0])
@@ -106,7 +109,7 @@ class ChartsController < ApplicationController
             d.dot_size = 4
           end
           d.set_colour(COLORS[i % COLORS.length])
-          d.set_tooltip(v[1]) unless v[1].nil?
+          d.set_tooltip("#{v[1]}<br>#{labels[j]}") unless v[1].nil?
           d
         else
           v
@@ -120,7 +123,7 @@ class ChartsController < ApplicationController
   end
   
   def data_for_pie
-    data_for_all do |chart,name,values|
+    data_for_all do |chart,name,values,labels|
       pie = Pie.new
       pie.tooltip = get_global_hints
       pie.start_angle = 35
