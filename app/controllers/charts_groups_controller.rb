@@ -30,7 +30,7 @@ class ChartsGroupsController < ChartsController
   
   def get_data(conditions = {}, grouping = nil, range = {})
     
-    grouping ||= :activities
+    grouping ||= :users
     
     group = case grouping
     when :users then "user_id"
