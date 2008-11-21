@@ -185,7 +185,7 @@ class ChartsController < ApplicationController
   def show_date_condition
     false
   end
-  
+    
   def get_grouping_options
     [ :users, :issues, :activities, :categories ]
   end
@@ -290,9 +290,10 @@ class ChartsController < ApplicationController
   end
   
   def prepare_params
-    range = {:steps => 0, :offset => 1, :in => :days}
+    range = {:steps => 10, :offset => 1, :in => :days}
     range[:steps] = Integer(params[:range_steps]) unless params[:range_steps].blank?
-    range[:offset] = Integer(params[:range_offset]) unless params[:range_offset].blank?
+    range[:steps] = 0 if params[:range_steps] and params[:range_steps].blank?
+    range[:offset] = Integer(params[:range_offset]) unless 
     range[:in] = params[:range_in].to_sym unless params[:range_in].blank?
     
     conditions = {:project_id => Project.find(params[:project_id]).id}

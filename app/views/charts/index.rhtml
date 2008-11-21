@@ -17,7 +17,7 @@
         <% form_tag '#', :method => :get do %>
           <div class="box">
               <% if @date_condition %>
-                <p><%= l(:charts_show_last) %> <%= text_field_tag "range_steps".to_sym, params[:range_steps] ? params[:range_steps].to_sym : 10, :size => 4 %> <%= select_tag "range_in".to_sym, options_for_select(@range_in_options, params[:range_in] ? params[:range_in].to_sym : :days) %></p>
+                <p><%= l(:charts_show_last) %> <%= text_field_tag "range_steps".to_sym, params[:range_steps] ? params[:range_steps] : 10, :size => 4 %> <%= select_tag "range_in".to_sym, options_for_select(@range_in_options, params[:range_in] ? params[:range_in].to_sym : :days) %></p>
               <% end %>
               <% unless @grouping_options.empty? %>
                 <p><%= l(:charts_group_by) %> <%= select_tag :grouping, options_for_select(@grouping_options, params[:grouping] ? params[:grouping].to_sym : nil) %></p>

@@ -28,7 +28,7 @@ class ChartsGroupsController < ChartsController
     end
   end
   
-  def get_data(conditions = {}, grouping = nil, range = {})
+  def get_data(conditions, grouping, range)
     
     grouping ||= :users
     

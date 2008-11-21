@@ -44,8 +44,7 @@ class ChartsHoursController < ChartsController
     end
   end
   
-  def get_data(conditions = {}, grouping = nil, range = {})
-
+  def get_data(conditions, grouping , range)
     unless range[:steps] and range[:steps] > 0 and range[:offset]
         first = TimeEntry.find(:first, :conditions => conditions, :order => :spent_on)
         range = count_range(range, first.spent_on) if first
