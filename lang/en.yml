@@ -2,6 +2,7 @@ charts_menu_label: Charts
 charts_link_groups: Logged hours
 charts_link_hours: Logged hours timeline
 charts_link_burndown: Burndown
+charts_link_deviation: Deviations
 charts_show_last: Show last
 charts_show_last_days: days
 charts_show_last_weeks: weeks
@@ -40,3 +41,14 @@ charts_burndown_group_estimated: estimated hours
 charts_burndown_group_logged: logged hours
 charts_burndown_group_remaining: remaining hours
 charts_burndown_group_predicted: predicted (remaining + logged) hours
+
+charts_deviation_x: issues
+charts_deviation_y: percent of estimated hours
+charts_deviation_hint_logged_over_estimation: %d hours logged, %d over estimation (%d%%)
+charts_deviation_hint_logged: %d hours logged
+charts_deviation_hint_remaining_over_estimation: %d hours to finish, %d over estimation (%d%%)
+charts_deviation_hint_remaining: %d hours to finish
+charts_deviation_hint_issue: <br>%d hours estimated, %d%% work done
+charts_deviation_hint_label: "issue #%d, %s"
+charts_deviation_group_logged: logged hours
+charts_deviation_group_remaining: remaining hours

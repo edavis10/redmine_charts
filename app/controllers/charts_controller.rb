@@ -71,6 +71,10 @@ class ChartsController < ApplicationController
         x.set_labels(labels) 
       end
       chart.x_axis = x
+    else
+      x = XAxis.new
+      x.set_labels([""])
+      chart.x_axis = x
     end
 
     unless get_x_legend.nil?
@@ -86,6 +90,33 @@ class ChartsController < ApplicationController
     end
     
     render :text => chart.to_s
+  end
+  
+  def data_for_stack
+    i = 0
+    
+    data_for_all do |chart,name,values,labels|
+      bar = Bar.new
+      bar.text = (name == '0') ? l(:charts_group_all) : name
+      bar.colour = COLORS[i % COLORS.length]
+
+      j = -1
+
+      bar.values  = values.collect do |v|
+        j += 1
+        if v.is_a? Array
+          d = BarValue.new(v[0])
+          d.set_value(v[0])
+          d.set_tooltip("#{v[1]}<br>#{labels[j]}") unless v[1].nil?
+          d
+        else
+          v
+        end
+      end
+
+      chart.add_element(bar)
+      i+=1
+    end
   end
   
   def data_for_line

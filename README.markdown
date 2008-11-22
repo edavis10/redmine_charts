@@ -38,10 +38,10 @@ Shows logged hours per day, week or month and groups it per issue, user, categor
 
 Shows estimated, logged and remaining hours.
 
-![Screenshot of hours chart](http://farm4.static.flickr.com/3163/3047776359_dec31ede64_o.png)
+![Screenshot of hours chart](http://farm4.static.flickr.com/3142/3049597577_f9337729b8_o.png)
 
-## Planned charts
+### Deviations
 
-### Deviation
+Compares estimated to logged hours.
 
-Compares estimated to logged hours per issue, user, category or activity.
+![Screenshot of deviations chart](http://farm4.static.flickr.com/3176/3050436036_bcd504a8b5_o.png)

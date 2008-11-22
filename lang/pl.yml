@@ -2,6 +2,7 @@ charts_menu_label: Wykresy
 charts_link_groups: Udział zaraportowanych godzin
 charts_link_hours: Zaraportowane godziny
 charts_link_burndown: Burndown
+charts_link_deviation: Odchylenia
 charts_show_last: Pokaż
 charts_show_last_days: dni
 charts_show_last_weeks: tygodni
@@ -40,3 +41,14 @@ charts_burndown_group_estimated: oszacowane godziny
 charts_burndown_group_logged: zaraportowane godziny
 charts_burndown_group_remaining: pozostałe godziny
 charts_burndown_group_predicted: zaraportowane + pozostałe godziny
+
+charts_deviation_x: zagadnienia
+charts_deviation_y: procent wykorzystania godzin
+charts_deviation_hint_logged_over_estimation: zaraportowano %d godzin, przekroczenie wyniosło %d godzin (%d%%)
+charts_deviation_hint_logged: zaraportowano %d godzin
+charts_deviation_hint_remaining_over_estimation: pozostało %d godzin, przekroczenie wyniesie %d godziny (%d%%)
+charts_deviation_hint_remaining: pozostało %d godzin
+charts_deviation_hint_issue: <br>oszacowano na %d godzin, wykonano %d%% prac
+charts_deviation_hint_label: "zagadnienie #%d, %s"
+charts_deviation_group_logged: zaraportowane godziny
+charts_deviation_group_remaining: pozostałe godziny 
