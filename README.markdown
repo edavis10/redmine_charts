@@ -41,3 +41,7 @@ Chart shows how much hours was logged in given time period. It is possible to gr
 Chart shows, for every issue, logged and remaining hours in the ratio of estimated hours.
 
 ![Screenshot of deviations chart](http://farm4.static.flickr.com/3176/3050436036_bcd504a8b5_o.png)
+
+## Issues
+
+See [Redmine Chart LightHouse page](http://mszczytowski.lighthouseapp.com/projects/20445-redmine-chart/overview).
