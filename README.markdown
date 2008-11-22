@@ -22,26 +22,26 @@ Run Redmine and have a fun!
 
 ## Charts
 
-### Logged hours
+### Burndown
 
-Shows total logged hours per issue, user, category or activity.
+Chart shows timeline with estimated, logged and remaining hours changes.
+
+![Screenshot of hours chart](http://farm4.static.flickr.com/3142/3049597577_f9337729b8_o.png)
+
+### Logged hours ratio
+
+Chart shows how much hours was logged, grouping by users, issues, activities or categories, is ratio to total logged hours. It is possible to limit data for given user, issue, category or activity.
 
 ![Screenshot of groups chart](http://farm4.static.flickr.com/3286/3047776453_3d6a152a25_o.png)
 
 ### Logged hours timeline
 
-Shows logged hours per day, week or month and groups it per issue, user, category or activity. 
+Chart shows how much hours was logged in given time period. It is possible to group by and limit to given user, issue, category or activity.
 
 ![Screenshot of hours chart](http://farm4.static.flickr.com/3021/3047776559_bab9604c84_o.png)
 
-### Burndown
+### Logged hours deviations
 
-Shows estimated, logged and remaining hours.
-
-![Screenshot of hours chart](http://farm4.static.flickr.com/3142/3049597577_f9337729b8_o.png)
-
-### Deviations
-
-Compares estimated to logged hours.
+Chart shows, for every issue, logged and remaining hours in the ratio of estimated hours.
 
 ![Screenshot of deviations chart](http://farm4.static.flickr.com/3176/3050436036_bcd504a8b5_o.png)

@@ -8,6 +8,10 @@ class ChartsBurndownController < ChartsController
     l(:charts_link_burndown)
   end
   
+  def get_help
+    l(:charts_burndown_help)
+  end
+  
   def get_type
     "line"
   end

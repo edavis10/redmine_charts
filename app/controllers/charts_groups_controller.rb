@@ -8,6 +8,10 @@ class ChartsGroupsController < ChartsController
     l(:charts_link_groups)
   end
   
+  def get_help
+    l(:charts_groups_help)
+  end
+  
   def get_type
     "pie"
   end

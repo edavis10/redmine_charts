@@ -1,8 +1,8 @@
 charts_menu_label: Wykresy
-charts_link_groups: Udział zaraportowanych godzin
-charts_link_hours: Zaraportowane godziny
+charts_link_groups: Zaraportowanych godzin
+charts_link_hours: Zaraportowane godziny w czasie
 charts_link_burndown: Burndown
-charts_link_deviation: Odchylenia
+charts_link_deviation: Odchylenia oszacować
 charts_show_last: Pokaż
 charts_show_last_days: dni
 charts_show_last_weeks: tygodni
@@ -24,11 +24,13 @@ charts_group_all: wszystko
 charts_groups_global_hint: "#val# z #total# godzin<br>#percent# z 100%%"
 charts_groups_hint: %s
 charts_groups_hint_others: Pozostałe
+charts_groups_help: "Wykres przedstawia procentowy udział zaraportowanych godzin, według użytkowników, zagadnień, aktywności lub kategorii. Opcjonalnie wynik można zawęzić do konkretnego użytkownika, zagadnienia, aktywności lub kategorii."
 
 charts_hours_x: 
 charts_hours_y: godziny
 charts_hours_hint: %d godzin, %d wpisów
 charts_hours_hint_empty: 0 godzin
+charts_hours_help: "Wykres przedstawia ile godzin zostało zaraportowanych w zadanym przedziale czasu. Wykres może być pogrupowany i zawężony do użytkowników, zagadnień, aktywności lub kategorii."
 
 charts_burndown_x: 
 charts_burndown_y: godziny
@@ -41,9 +43,10 @@ charts_burndown_group_estimated: oszacowane godziny
 charts_burndown_group_logged: zaraportowane godziny
 charts_burndown_group_remaining: pozostałe godziny
 charts_burndown_group_predicted: zaraportowane + pozostałe godziny
+charts_burndown_help: "Wykres przedstawia jak w czasie zmieniała się ilość godzin oszacowanych, zaraportowanych i potrzebnych do zakończenia projektu."
 
 charts_deviation_x: zagadnienia
-charts_deviation_y: procent wykorzystania godzin
+charts_deviation_y: %% stosunek do godzin oszacowanych
 charts_deviation_hint_logged_over_estimation: zaraportowano %d godzin, przekroczenie wyniosło %d godzin (%d%%)
 charts_deviation_hint_logged: zaraportowano %d godzin
 charts_deviation_hint_remaining_over_estimation: pozostało %d godzin, przekroczenie wyniesie %d godziny (%d%%)
@@ -52,3 +55,4 @@ charts_deviation_hint_issue: <br>oszacowano na %d godzin, wykonano %d%% prac
 charts_deviation_hint_label: "zagadnienie #%d, %s"
 charts_deviation_group_logged: zaraportowane godziny
 charts_deviation_group_remaining: pozostałe godziny 
+charts_deviation_help: "Wykres przedstawia, dla każdego zagadnienia, stosunek godzin zaraportowanych oraz pozostałych do oszacowanych. Suma godzin zaraportowanych i pozostałych nie powinna przekraczać 100%%."

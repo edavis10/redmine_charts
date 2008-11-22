@@ -29,6 +29,7 @@ class ChartsController < ApplicationController
     else
       @show_conditions = false
     end
+    @help = get_help
     render :template => "charts/index"
   end
 
@@ -175,6 +176,10 @@ class ChartsController < ApplicationController
   end
   
   protected
+  
+  def get_help
+    nil
+  end
   
   def get_title
     nil

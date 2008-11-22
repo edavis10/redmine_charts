@@ -13,6 +13,12 @@
   <%= javascript_include_tag '/plugin_assets/open_flash_chart/javascripts/swfobject.js' %>
 <% end %>
 
+<% if @help %>
+    <div class="box">
+        <%= @help %>
+    </div>
+<% end %>
+
 <% if @show_conditions %>
     <div class="splitcontentleft" style="width:30%">
         <% form_tag '#', :method => :get do %>

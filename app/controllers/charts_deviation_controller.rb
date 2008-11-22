@@ -8,6 +8,10 @@ class ChartsDeviationController < ChartsController
     l(:charts_link_deviation)
   end
   
+  def get_help
+    l(:charts_deviation_help)
+  end
+  
   def get_type
     "stack"
   end

@@ -8,6 +8,10 @@ class ChartsHoursController < ChartsController
     l(:charts_link_hours)
   end
   
+  def get_help
+    l(:charts_hours_help)
+  end
+  
   def get_type
     "line"
   end
