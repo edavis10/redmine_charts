@@ -91,7 +91,7 @@ class ChartsBurndownController < ChartsController
         total_ratio += ratio
         hours -= issue.estimated_hours.to_f * ratio.to_f / 100 if issue.estimated_hours
       end
-      done[i] = issues.count > 0 ? Integer(total_ratio/issues.count) : 0
+      done[i] = issues.size > 0 ? Integer(total_ratio/issues.size) : 0
       remaining[i] = [hours, l(:charts_burndown_hint_remaining, hours, done[i])]        
     end
     

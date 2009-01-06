@@ -84,7 +84,7 @@ class ChartsDeviationController < ChartsController
     sets[l(:charts_deviation_group_logged)] = logged_values
     sets[l(:charts_deviation_group_remaining)] = remaining_values
     
-    [labbels, rows.count, max, sets]
+    [labbels, rows.size, max, sets]
   end
   
 end

@@ -60,7 +60,7 @@ class ChartsController < ApplicationController
       x.set_range(0,x_count,1) if x_count
       if x_labels        
         labels = []         
-        step = (x_labels.count / X_STEPS).to_i
+        step = (x_labels.size / X_STEPS).to_i
         step = 1 if step == 0
         x_labels.each_with_index do |l,i|          
           if i % step == 0
