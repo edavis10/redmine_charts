@@ -68,15 +68,15 @@ class ChartsHoursController < ChartsController
     group = group.join(", ")
   
     select = []
-    select << "#{range} value_x"
-    select << "count(1) count_y"
-    select << "sum(hours) value_y"
-    select << "user_id group_id" if grouping == :users
-    select << "issue_id group_id" if grouping == :issues
-    select << "project_id group_id" if grouping == :projects
-    select << "activity_id group_id" if grouping == :activities
-    select << "issues.category_id group_id" if grouping == :categories
-    select << "0 group_id" if grouping.nil? or grouping == :none
+    select << "#{range} as value_x"
+    select << "count(1) as count_y"
+    select << "sum(hours) as value_y"
+    select << "user_id as group_id" if grouping == :users
+    select << "issue_id as group_id" if grouping == :issues
+    select << "project_id as group_id" if grouping == :projects
+    select << "activity_id as group_id" if grouping == :activities
+    select << "issues.category_id as group_id" if grouping == :categories
+    select << "0 as group_id" if grouping.nil? or grouping == :none
     select = select.join(", ")
   
     rows = TimeEntry.find(:all, :joins => "left join issues on issues.id = issue_id", :select => select, :conditions => conditions, :order => :spent_on, :readonly => true, :group => group)

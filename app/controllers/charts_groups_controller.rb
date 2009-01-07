@@ -44,13 +44,13 @@ class ChartsGroupsController < ChartsController
     end
   
     select = []    
-    select << "null value_x"
-    select << "sum(hours) value_y"
-    select << "#{group} group_id"
+    select << "null as value_x"
+    select << "sum(hours) as value_y"
+    select << "#{group} as group_id"
     select = select.join(", ")
-  
+
     rows = TimeEntry.find(:all, :joins => "left join issues on issues.id = issue_id", :select => select, :conditions => conditions, :readonly => true, :group => group, :order => "sum(hours) desc")
-  
+
     sets = []
     total = 0
     other = 0
