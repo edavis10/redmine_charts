@@ -233,19 +233,22 @@ class ChartsController < ApplicationController
     [ :user_id, :issue_id, :activity_id, "issues.category_id".to_sym ]
   end
   
-  def count_range(range, first)
+  def count_range(range, first_time)
     case range[:in]
     when :weeks
       strftime_i = "%W"
+      items_in_year = 52
     when :months
       strftime_i = "%m"
+      items_in_year = 12
     else
       strftime_i = "%j"
+      items_in_year = 366
     end
-    
-    first = first.strftime(strftime_i).to_i + first.strftime('%Y').to_i
-    now = Time.now.strftime(strftime_i).to_i + Time.now.strftime('%Y').to_i
-    
+   
+    first = first_time.strftime(strftime_i).to_i + first_time.strftime('%Y').to_i * items_in_year
+    now = Time.now.strftime(strftime_i).to_i + Time.now.strftime('%Y').to_i * items_in_year
+
     range[:steps] = now - first + 4
     range[:offset] = 1
     range

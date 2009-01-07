@@ -55,9 +55,9 @@ class ChartsBurndownController < ChartsController
     first_date = f if f < first_date
     f = Issue.minimum(:created_on, :conditions => { :project_id => conditions[:project_id]})
     first_date = f if f < first_date
-    
+   
     range = count_range({:in => :days, :offset => 1}, first_date.to_time)
-    
+  
     from, to, x_labels, x_count, range, dates = prepare_range(range, "start_date")
 
     estimated = []
