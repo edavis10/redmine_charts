@@ -38,7 +38,7 @@ class ChartsDeviationController < ChartsController
   
   def get_data(conditions, grouping, range)
 
-    rows = Issue.find(:all, :conditions => ["issues.estimated_hours > 0"], :joins => "left join time_entries on issues.id = time_entries.issue_id", :select => "issues.id, issues.subject, issues.done_ratio, issues.estimated_hours, sum(time_entries.hours) logged_hours", :readonly => true, :group => "issues.id")
+    rows = Issue.find(:all, :conditions => ["issues.estimated_hours > 0"], :joins => "left join time_entries on issues.id = time_entries.issue_id", :select => "issues.id, issues.subject, issues.done_ratio, issues.estimated_hours, sum(time_entries.hours) as logged_hours", :readonly => true, :group => "issues.id")
         
     labbels = []
     max = 0
