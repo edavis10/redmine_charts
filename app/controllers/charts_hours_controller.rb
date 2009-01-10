@@ -35,7 +35,7 @@ class ChartsHoursController < ChartsController
     select << "0 as group_id" if grouping.nil? or grouping == :none
     select = select.join(", ")
 
-    rows = TimeEntry.find(:all, :joins => "left join issues on issues.id = issue_id", :select => select, :conditions => conditions, :order => :spent_on, :readonly => true, :group => group)
+    rows = TimeEntry.find(:all, :joins => "left join issues on issues.id = issue_id", :select => select, :conditions => conditions, :order => "1", :readonly => true, :group => group)
 
     y_max, sets = get_sets(rows, grouping, x_count)
 

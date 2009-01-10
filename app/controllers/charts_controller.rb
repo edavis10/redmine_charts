@@ -279,7 +279,8 @@ class ChartsController < ApplicationController
     end
 
     diff = from.strftime(strftime_i).to_i + from.strftime('%Y').to_i
-    sql = ActiveRecord::Base.connection.format_date(range[:in], column, diff)
+    #sql = RedmineCharts::DateFormat.format_date(range[:in], column, diff)
+    sql = ActiveRecord::Base.format_date(range[:in], column, diff)
 
     [from, to, x_labels, range[:steps], sql, dates]
   end

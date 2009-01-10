@@ -1,8 +1,6 @@
 require 'redmine'
 
-require_dependency 'active_record/connection_adapters/abstract_adapter'
-require_dependency 'active_record/connection_adapters/mysql_adapter'
-require_dependency 'active_record/connection_adapters/postgresql_adapter'
+require_dependency 'redmine_charts/date_format'
 
 Redmine::Plugin.register :charts do
   name 'Charts'
