@@ -4,6 +4,52 @@ class ChartsHoursController < ChartsController
   
   protected
 
+  def get_data(conditions, grouping , range)
+    unless range[:steps] and range[:steps] > 0 and range[:offset]
+        first = TimeEntry.find(:first, :conditions => conditions, :order => :spent_on)
+        range = count_range(range, first.spent_on) if first
+    end
+
+    from, to, x_labels, x_count, range, dates = prepare_range(range, "spent_on")
+
+    conditions[:spent_on] = (from.to_date)...(to.to_date)
+
+    group = []
+    group << range
+    group << "user_id" if grouping == :users
+    group << "issue_id" if grouping == :issues
+    group << "project_id" if grouping == :projects
+    group << "activity_id" if grouping == :activities
+    group << "issues.category_id" if grouping == :categories
+    group = group.join(", ")
+
+    select = []
+    select << "#{range} as value_x"
+    select << "count(1) as count_y"
+    select << "sum(hours) as value_y"
+    select << "user_id as group_id" if grouping == :users
+    select << "issue_id as group_id" if grouping == :issues
+    select << "project_id as group_id" if grouping == :projects
+    select << "activity_id as group_id" if grouping == :activities
+    select << "issues.category_id as group_id" if grouping == :categories
+    select << "0 as group_id" if grouping.nil? or grouping == :none
+    select = select.join(", ")
+
+    rows = TimeEntry.find(:all, :joins => "left join issues on issues.id = issue_id", :select => select, :conditions => conditions, :order => :spent_on, :readonly => true, :group => group)
+
+    y_max, sets = get_sets(rows, grouping, x_count)
+
+    [x_labels, x_count, y_max, sets]
+  end
+
+  def get_hints(record = nil, grouping = nil)
+    unless record.nil?
+      l(:charts_hours_hint, record.value_y.to_i, record.count_y.to_i)
+    else
+      l(:charts_hours_hint_empty)
+    end
+  end
+
   def get_title
     l(:charts_link_hours)
   end
@@ -39,51 +85,5 @@ class ChartsHoursController < ChartsController
   def get_grouping_options
     [ :none, :users, :issues, :activities, :categories ]
   end
-
-  def get_hints(record = nil, grouping = nil)
-    unless record.nil?
-      l(:charts_hours_hint, record.value_y.to_i, record.count_y.to_i)
-    else
-      l(:charts_hours_hint_empty)
-    end
-  end
   
-  def get_data(conditions, grouping , range)
-    unless range[:steps] and range[:steps] > 0 and range[:offset]
-        first = TimeEntry.find(:first, :conditions => conditions, :order => :spent_on)
-        range = count_range(range, first.spent_on) if first
-    end
-    
-    from, to, x_labels, x_count, range, dates = prepare_range(range, "spent_on")
-
-    conditions[:spent_on] = (from.to_date)...(to.to_date)
-
-    group = []
-    group << range
-    group << "user_id" if grouping == :users
-    group << "issue_id" if grouping == :issues
-    group << "project_id" if grouping == :projects
-    group << "activity_id" if grouping == :activities  
-    group << "issues.category_id" if grouping == :categories
-    group = group.join(", ")
-  
-    select = []
-    select << "#{range} as value_x"
-    select << "count(1) as count_y"
-    select << "sum(hours) as value_y"
-    select << "user_id as group_id" if grouping == :users
-    select << "issue_id as group_id" if grouping == :issues
-    select << "project_id as group_id" if grouping == :projects
-    select << "activity_id as group_id" if grouping == :activities
-    select << "issues.category_id as group_id" if grouping == :categories
-    select << "0 as group_id" if grouping.nil? or grouping == :none
-    select = select.join(", ")
-  
-    rows = TimeEntry.find(:all, :joins => "left join issues on issues.id = issue_id", :select => select, :conditions => conditions, :order => :spent_on, :readonly => true, :group => group)
-  
-    y_max, sets = get_sets(rows, grouping, x_count)
-    
-    [x_labels, x_count, y_max, sets]
-  end
-    
 end

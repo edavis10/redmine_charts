@@ -232,7 +232,7 @@ class ChartsController < ApplicationController
   def get_conditions_options
     [ :user_id, :issue_id, :activity_id, "issues.category_id".to_sym ]
   end
-  
+
   def count_range(range, first_time)
     case range[:in]
     when :weeks
@@ -245,7 +245,7 @@ class ChartsController < ApplicationController
       strftime_i = "%j"
       items_in_year = 366
     end
-   
+
     first = first_time.strftime(strftime_i).to_i + first_time.strftime('%Y').to_i * items_in_year
     now = Time.now.strftime(strftime_i).to_i + Time.now.strftime('%Y').to_i * items_in_year
 
@@ -253,7 +253,7 @@ class ChartsController < ApplicationController
     range[:offset] = 1
     range
   end
-  
+
   def prepare_range(range, column = "created_on")
     case range[:in]
     when :weeks
@@ -278,17 +278,17 @@ class ChartsController < ApplicationController
       dates[i] = times_ago(range[:steps],range[:offset],i+1,range[:in])
     end
 
-    diff = from.strftime(strftime_i).to_i + from.strftime('%Y').to_i      
-    sql = "(strftime('#{strftime_i}', #{column}) + strftime('%Y', #{column}) - #{diff})"
-    
+    diff = from.strftime(strftime_i).to_i + from.strftime('%Y').to_i
+    sql = ActiveRecord::Base.connection.format_date(range[:in], column, diff)
+
     [from, to, x_labels, range[:steps], sql, dates]
   end
-  
+
   def get_sets(rows, grouping, x_count, flat = false)
     if rows.empty?
       [nil, {}]
     end
-    
+
     sets = {}
     y_max = 0
     i = -1
@@ -300,20 +300,20 @@ class ChartsController < ApplicationController
         group_name = group_id_to_string(r.group_id, grouping)
       end
       sets[group_name] ||= Array.new(x_count, [0, get_hints])
-      
+
       if r.value_x
         i = r.value_x.to_i
       else
         i += 1
       end
-      
+
       sets[group_name][i] = [r.value_y.to_i, get_hints(r, grouping)]
       y_max = r.value_y.to_i if y_max < r.value_y.to_i
     end
-    
+
     [y_max, sets]
   end
-  
+
   def group_id_to_string(group_id, grouping)
     group_name = group_id
     group_name = IssueCategory.find_by_id(group_id.to_i).name if grouping == :categories and IssueCategory.find_by_id(group_id.to_i)
@@ -348,9 +348,10 @@ class ChartsController < ApplicationController
     
     [conditions, grouping, range]
   end
-  
+
+
   def times_ago(steps, offset, i, type)
     ((steps*offset)-i-1).send(type).ago
   end
-
+  
 end
