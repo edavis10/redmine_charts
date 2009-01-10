@@ -8,7 +8,7 @@ Redmine::Plugin.register :charts do
   name 'Charts'
   author 'Maciej Szczytowski'
   description 'Charts plugin contains some useful project statistics.'
-  version '0.0.5'
+  version '0.0.6'
 
   permission :charts, {"charts_groups".to_sym => [:index], "charts_hours".to_sym => [:index], "charts_burndown".to_sym => [:index]}, :public => true
     
