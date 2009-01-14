@@ -4,7 +4,7 @@ class ChartsController < ApplicationController
 
   menu_item :charts
 
-  before_filter :find_project, :only => [:index]
+  before_filter :find_project, :authorize, :only => [:index]
   
   Y_STEPS = 5
   X_STEPS = 5
