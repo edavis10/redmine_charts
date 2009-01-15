@@ -16,7 +16,6 @@ module RedmineCharts
         "(DATE_FORMAT('#{format_in}', #{column_name}) + DATE_FORMAT('%Y', #{column_name}) - #{diff_value})"
       end
     when /postgres.*/i
-      print "MACIEK :D"
       def format_date(format_in, column_name, diff_value)
         case format_in
         when :weeks
