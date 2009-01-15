@@ -9,10 +9,13 @@ class ChartsController < ApplicationController
   Y_STEPS = 5
   X_STEPS = 5
   
-  COLORS = ['#DFC329', '#6363AC', '#5E4725', "#d01f3c", "#356aa0", "#C79810"]
-  
   def data
-    send("data_for_#{get_type.to_s}".to_sym)
+    data = eval("RedmineCharts::DataFor#{get_type.to_s.camelize}")
+    i = 0
+    data_for_all do |chart,name,values,labels|
+      data.prepare_data(i,chart,name,values,labels)
+      i += 1
+    end
   end
 
   def index
@@ -35,11 +38,13 @@ class ChartsController < ApplicationController
     render :template => "charts/index"
   end
 
+  protected
+
   def data_for_all
     chart =OpenFlashChart.new
     
     conditions, grouping, range = prepare_params
-    
+
     x_labels, x_count, y_max, sets = get_data(conditions, grouping, range)
     
     sets.each do |name,values|
@@ -95,94 +100,10 @@ class ChartsController < ApplicationController
     render :text => chart.to_s
   end
   
-  def data_for_stack
-    i = 0
-    
-    data_for_all do |chart,name,values,labels|
-      bar = Bar.new
-      bar.text = (name == '0') ? l(:charts_group_all) : name
-      bar.colour = COLORS[i % COLORS.length]
-
-      j = -1
-
-      bar.values  = values.collect do |v|
-        j += 1
-        if v.is_a? Array
-          d = BarValue.new(v[0])
-          d.set_value(v[0])
-          d.set_tooltip("#{v[1]}<br>#{labels[j]}") unless v[1].nil?
-          d
-        else
-          v
-        end
-      end
-
-      chart.add_element(bar)
-      i+=1
-    end
-  end
-  
-  def data_for_line
-    i = 0
-
-    data_for_all do |chart,name,values,labels|
-      line = LineDot.new
-      line.text = (name == '0') ? l(:charts_group_all) : name
-      line.width = 2
-      line.colour = COLORS[i % COLORS.length]
-      line.dot_size = 2
-
-      j = -1
-
-      vals = values.collect do |v|        
-        j += 1
-        if v.is_a? Array
-          d = Base.new
-          d.set_value(v[0])
-          if v[2]
-            d.dot_size = 4
-          end
-          d.set_colour(COLORS[i % COLORS.length])
-          d.set_tooltip("#{v[1]}<br>#{labels[j]}") unless v[1].nil?
-          d
-        else
-          v
-        end
-      end
-      
-      line.values = vals
-      chart.add_element(line)
-      i+=1
-    end   
-  end
-  
-  def data_for_pie
-    data_for_all do |chart,name,values,labels|
-      pie = Pie.new
-      pie.tooltip = get_global_hints
-      pie.start_angle = 35
-      pie.animate = true
-      pie.colours = COLORS
-      
-      vals = values.collect do |v|
-        if v.is_a? Array
-          PieValue.new(v[0], v[1])
-        else
-          v
-        end
-      end
-      
-      pie.values = vals
-      chart.add_element(pie)
-    end    
-  end
-
   def get_type
     "line_dot"
   end
 
-  protected
-  
   def get_help
     nil
   end

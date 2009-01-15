@@ -1,6 +1,8 @@
 module RedmineCharts
   module Utils
 
+    @@colors = ['#DFC329', '#6363AC', '#5E4725', "#d01f3c", "#356aa0", "#C79810"]
+
     @@controllers = %w{burndown groups hours deviation}.collect { |name| [name.to_sym, "charts_#{name}".to_sym] }
 
     # Returns default controller name, which should be entry when user click 'charts' label in project menu.
@@ -19,6 +21,14 @@ module RedmineCharts
     # See routes.rb.
     def self.controllers_for_routing &block
       @@controllers.each { |controller| block.call(controller[0].to_s, controller[1].to_s) }
+    end
+
+    def self.colors
+      @@colors
+    end
+
+    def self.color(i)
+      @@colors[i % @@colors.length]
     end
 
   end

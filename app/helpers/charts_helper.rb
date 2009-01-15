@@ -14,9 +14,9 @@ module ChartsHelper
   end
 
   def show_graph
-    params ||= {}
-    params[:action] = :data
-    controller.open_flash_chart_object("100%", "400", url_for(params))
+    controller.params ||= {}
+    controller.params[:action] = :data
+    controller.open_flash_chart_object("100%", "400", url_for(controller.params))
   end
 
   def show_date_condition(range_steps, range_in)

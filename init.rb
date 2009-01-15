@@ -3,6 +3,9 @@ require 'redmine'
 RAILS_DEFAULT_LOGGER.info 'Starting Charts Plugin for RedMine'
 
 require_dependency 'redmine_charts/date_format'
+require_dependency 'redmine_charts/data_for_line'
+require_dependency 'redmine_charts/data_for_pie'
+require_dependency 'redmine_charts/data_for_stack'
 require_dependency 'redmine_charts/utils'
 
 Redmine::Plugin.register :charts_plugin do
