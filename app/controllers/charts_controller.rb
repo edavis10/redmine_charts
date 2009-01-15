@@ -11,8 +11,11 @@ class ChartsController < ApplicationController
   
   COLORS = ['#DFC329', '#6363AC', '#5E4725', "#d01f3c", "#356aa0", "#C79810"]
   
+  def data
+    send("data_for_#{get_type.to_s}".to_sym)
+  end
+
   def index
-    @graph = open_flash_chart_object("100%",400,"#{url_for(:action => nil)}/data_for_#{get_type.to_s}?#{params.to_param}",true,'/plugin_assets/open_flash_chart/')
     if show_conditions
       @grouping_options = get_grouping_options.collect { |i| [l("charts_group_by_#{i}".to_sym), i]  }
       @conditions_options = get_conditions_options.collect do |i|
@@ -24,7 +27,6 @@ class ChartsController < ApplicationController
         end
       end
       @date_condition = show_date_condition
-      @range_in_options = [:days, :weeks, :months].collect { |i| [l("charts_show_last_#{i}".to_sym), i]  }
       @show_conditions = true
     else
       @show_conditions = false
@@ -174,7 +176,11 @@ class ChartsController < ApplicationController
       chart.add_element(pie)
     end    
   end
-  
+
+  def get_type
+    "line_dot"
+  end
+
   protected
   
   def get_help
@@ -195,10 +201,6 @@ class ChartsController < ApplicationController
   
   def get_hints
     nil
-  end
-  
-  def get_type
-    "line_dot"
   end
   
   def get_x_legend
