@@ -1,6 +1,6 @@
 require 'redmine'
 
-RAILS_DEFAULT_LOGGER.info 'Starting Charts plugin for RedMine'
+RAILS_DEFAULT_LOGGER.info 'Starting Charts Plugin for RedMine'
 
 require_dependency 'redmine_charts/date_format'
 require_dependency 'redmine_charts/utils'
