@@ -93,7 +93,9 @@ class ChartsController < ApplicationController
       y_legend.set_style('{font-size: 12px}')
       chart.set_y_legend(y_legend)
     end
-    
+
+    chart.set_bg_colour('#ffffff');
+
     render :text => chart.to_s
   end
 
