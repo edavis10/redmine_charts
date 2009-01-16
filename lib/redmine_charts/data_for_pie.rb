@@ -1,7 +1,7 @@
 module RedmineCharts
   module DataForPie
 
-    def self.prepare_data(i,chart,name,values,labels)
+    def self.prepare_data(index,name,values,labels)
       pie = OpenFlashChart::Pie.new
       #pie.tooltip = get_global_hints
       pie.start_angle = 35
@@ -17,7 +17,7 @@ module RedmineCharts
       end
 
       pie.values = vals
-      chart.add_element(pie)
+      pie
     end
 
   end

@@ -1,10 +1,10 @@
 module RedmineCharts
   module DataForStack
 
-    def self.prepare_data(i,chart,name,values,labels)
+    def self.prepare_data(index,name,values,labels)
       bar = OpenFlashChart::Bar.new
       bar.text = (name == '0') ? l(:charts_group_all) : name
-      bar.colour = RedmineCharts::Utils.color(i)
+      bar.colour = RedmineCharts::Utils.color(index)
 
       j = -1
 
@@ -20,7 +20,7 @@ module RedmineCharts
         end
       end
 
-      chart.add_element(bar)
+      bar
     end
 
   end

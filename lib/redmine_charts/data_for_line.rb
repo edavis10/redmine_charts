@@ -1,11 +1,11 @@
 module RedmineCharts
   module DataForLine
 
-    def self.prepare_data(i,chart,name,values,labels)
+    def self.prepare_data(index,name,values,labels)
       line = OpenFlashChart::LineDot.new
       line.text = (name == '0') ? l(:charts_group_all) : name
       line.width = 2
-      line.colour = RedmineCharts::Utils.color(i)
+      line.colour = RedmineCharts::Utils.color(index)
       line.dot_size = 2
 
       j = -1
@@ -18,7 +18,7 @@ module RedmineCharts
           if v[2]
             d.dot_size = 4
           end
-          d.set_colour(RedmineCharts::Utils.color(i))
+          d.set_colour(RedmineCharts::Utils.color(index))
           d.set_tooltip("#{v[1]}<br>#{labels[j]}") unless v[1].nil?
           d
         else
@@ -27,7 +27,7 @@ module RedmineCharts
       end
 
       line.values = vals
-      chart.add_element(line)
+      line
     end
 
   end

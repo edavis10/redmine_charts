@@ -8,16 +8,8 @@ class ChartsController < ApplicationController
   
   Y_STEPS = 5
   X_STEPS = 5
-  
-  def data
-    data = eval("RedmineCharts::DataFor#{get_type.to_s.camelize}")
-    i = 0
-    data_for_all do |chart,name,values,labels|
-      data.prepare_data(i,chart,name,values,labels)
-      i += 1
-    end
-  end
 
+  # Show main page with conditions form and chart
   def index
     if show_conditions
       @grouping_options = get_grouping_options.collect { |i| [l("charts_group_by_#{i}".to_sym), i]  }
@@ -35,20 +27,25 @@ class ChartsController < ApplicationController
       @show_conditions = false
     end
     @help = get_help
+    
     render :template => "charts/index"
   end
 
-  protected
-
-  def data_for_all
+  # Return data for chart
+  def data
     chart =OpenFlashChart.new
     
     conditions, grouping, range = prepare_params
 
     x_labels, x_count, y_max, sets = get_data(conditions, grouping, range)
-    
+
+    index = 0
+
+    type = get_module_type
+
     sets.each do |name,values|
-      yield(chart,name,values,x_labels)
+      chart.add_element(type.prepare_data(index,name,values,x_labels))
+      index += 1
     end
     
     unless get_title.nil?
@@ -99,7 +96,9 @@ class ChartsController < ApplicationController
     
     render :text => chart.to_s
   end
-  
+
+  protected
+
   def get_type
     "line_dot"
   end
@@ -248,6 +247,10 @@ class ChartsController < ApplicationController
   end
 
   private
+
+  def get_module_type
+    eval("RedmineCharts::DataFor#{get_type.to_s.camelize}")
+  end
 
   def find_project
     @project = Project.find(params[:project_id])
