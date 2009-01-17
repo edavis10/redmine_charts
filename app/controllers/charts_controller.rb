@@ -4,6 +4,8 @@ class ChartsController < ApplicationController
 
   menu_item :charts
 
+  before_filter :set_params_default_values
+
   before_filter :find_project, :authorize, :only => [:index]
   
   Y_STEPS = 5
@@ -27,6 +29,7 @@ class ChartsController < ApplicationController
       @show_conditions = false
     end
     @help = get_help
+    @title = get_title
     
     render :template => "charts/index"
   end
@@ -47,12 +50,7 @@ class ChartsController < ApplicationController
       chart.add_element(converter.convert(index,name,values,x_labels))
       index += 1
     end
-    
-    unless get_title.nil?
-      title = Title.new(get_title)
-      chart.set_title(title)
-    end
-
+       
     if show_y_axis
       y = YAxis.new
       y.set_range(0,y_max*1.2,y_max/Y_STEPS) if y_max
@@ -203,7 +201,6 @@ class ChartsController < ApplicationController
     end
 
     diff = from.strftime(strftime_i).to_i + from.strftime('%Y').to_i
-    #sql = RedmineCharts::DateFormat.format_date(range[:in], column, diff)
     sql = ActiveRecord::Base.format_date(range[:in], column, diff)
 
     [from, to, x_labels, range[:steps], sql, dates]
@@ -259,13 +256,18 @@ class ChartsController < ApplicationController
   rescue ActiveRecord::RecordNotFound
     render_404
   end
-  
+
+  def set_params_default_values
+    params[:range_steps] = 10 if params[:range_steps].blank?
+    params[:range_offset] = 1 if params[:range_offset].blank?
+    params[:range_in] = :days if params[:range_in].blank?
+  end
+
   def prepare_params
-    range = {:steps => 10, :offset => 1, :in => :days}
-    range[:steps] = Integer(params[:range_steps]) unless params[:range_steps].blank?
-    range[:steps] = 0 if params[:range_steps] and params[:range_steps].blank?
-    range[:offset] = Integer(params[:range_offset]) unless 
-    range[:in] = params[:range_in].to_sym unless params[:range_in].blank?
+    range = {}
+    range[:steps] = Integer(params[:range_steps])
+    range[:offset] = Integer(params[:range_offset])
+    range[:in] = params[:range_in].to_sym
     
     conditions = {:project_id => Project.find(params[:project_id]).id}
     get_conditions_options.each do |k|
