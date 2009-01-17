@@ -1,6 +1,8 @@
 module RedmineCharts
   module LineDataConverter
 
+    include GLoc
+
     def self.convert(index,name,values,labels)
       line = OpenFlashChart::LineDot.new
       line.text = (name == '0') ? l(:charts_group_all) : name

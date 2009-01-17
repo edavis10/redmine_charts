@@ -1,6 +1,8 @@
 module RedmineCharts
   module StackDataConverter
 
+    include GLoc
+
     def self.convert(index,name,values,labels)
       bar = OpenFlashChart::Bar.new
       bar.text = (name == '0') ? l(:charts_group_all) : name
