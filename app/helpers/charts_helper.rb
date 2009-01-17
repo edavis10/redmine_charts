@@ -16,7 +16,7 @@ module ChartsHelper
   def show_graph
     controller.params ||= {}
     controller.params[:action] = :data
-    controller.open_flash_chart_object("100%", "400", url_for(controller.params))
+    controller.open_flash_chart_object("100%", "400", url_for(controller.params).gsub("&amp;", "&"))
   end
 
   def show_date_condition(range_steps, range_in)
