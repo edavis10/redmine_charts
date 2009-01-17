@@ -1,7 +1,7 @@
 module RedmineCharts
-  module DataForStack
+  module StackDataConverter
 
-    def self.prepare_data(index,name,values,labels)
+    def self.convert(index,name,values,labels)
       bar = OpenFlashChart::Bar.new
       bar.text = (name == '0') ? l(:charts_group_all) : name
       bar.colour = RedmineCharts::Utils.color(index)

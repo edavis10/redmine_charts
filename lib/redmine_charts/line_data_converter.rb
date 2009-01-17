@@ -1,7 +1,7 @@
 module RedmineCharts
-  module DataForLine
+  module LineDataConverter
 
-    def self.prepare_data(index,name,values,labels)
+    def self.convert(index,name,values,labels)
       line = OpenFlashChart::LineDot.new
       line.text = (name == '0') ? l(:charts_group_all) : name
       line.width = 2

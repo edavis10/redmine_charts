@@ -41,10 +41,10 @@ class ChartsController < ApplicationController
 
     index = 0
 
-    type = get_module_type
+    converter = get_converter
 
     sets.each do |name,values|
-      chart.add_element(type.prepare_data(index,name,values,x_labels))
+      chart.add_element(converter.convert(index,name,values,x_labels))
       index += 1
     end
     
@@ -250,8 +250,8 @@ class ChartsController < ApplicationController
 
   private
 
-  def get_module_type
-    eval("RedmineCharts::DataFor#{get_type.to_s.camelize}")
+  def get_converter
+    eval("RedmineCharts::#{get_type.to_s.camelize}DataConverter")
   end
 
   def find_project
