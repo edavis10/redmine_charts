@@ -6,13 +6,13 @@ class ChartsBurndownController < ChartsController
 
   def get_data(conditions, grouping, range)
 
-    first_date = Date.current
-    f = Issue.minimum(:start_date, :conditions => { :project_id => conditions[:project_id]})
-    first_date = f if f and f < first_date
-    f = Issue.minimum(:created_on, :conditions => { :project_id => conditions[:project_id]})
-    first_date = f if f and f < first_date
-
-    range = RedmineCharts::RangeUtils.count_range({:in => :days, :offset => 1}, first_date.to_time)
+#    first_date = Date.current
+#    f = Issue.minimum(:start_date, :conditions => { :project_id => conditions[:project_id]})
+#    first_date = f if f and f < first_date
+#    f = Issue.minimum(:created_on, :conditions => { :project_id => conditions[:project_id]})
+#    first_date = f if f and f < first_date
+#
+#    range = RedmineCharts::RangeUtils.count_range({:in => :days, :offset => 1}, first_date.to_time)
 
     from, to, x_labels, x_count, range, dates = RedmineCharts::RangeUtils.prepare_range(range, "start_date")
 
@@ -96,7 +96,7 @@ class ChartsBurndownController < ChartsController
   end
   
   def show_date_condition
-    false
+    true
   end
   
   def get_grouping_options

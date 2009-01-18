@@ -1,6 +1,8 @@
 module RedmineCharts
   module GroupingUtils
 
+    include GLoc
+
     @@types = [ :users, :issues, :activities, :categories ]
 
     def self.default_types
@@ -13,6 +15,10 @@ module RedmineCharts
       else
          params[:grouping].to_sym
       end
+    end
+    
+    def self.to_options(options)
+      options.collect { |i| [l("charts_group_by_#{i}".to_sym), i]  }
     end
 
     def self.to_string(id, grouping)

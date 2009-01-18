@@ -10,21 +10,29 @@ class ChartsController < ApplicationController
   
   # Show main page with conditions form and chart
   def index
-    if show_date_condition or not get_grouping_options.empty? or not get_conditions_options.empty?
-      @grouping_options = get_grouping_options.collect { |i| [l("charts_group_by_#{i}".to_sym), i]  }
-      @conditions_options = get_conditions_options.collect do |i|
-        case i
-        when :user_id then [:user_id, Project.find(params[:project_id]).assignable_users.collect { |u| [u.login, u.id] }.unshift([l(:charts_condition_all), 0])]      
-        when :issue_id then [:issue_id, nil]
-        when :activity_id then [:activity_id, Enumeration.get_values("ACTI").collect { |a| [a.name.downcase, a.id] }.unshift([l(:charts_condition_all), 0])]
-        when "issues.category_id".to_sym then ["issues.category_id".to_sym, IssueCategory.find_all_by_project_id(Project.find(params[:project_id]).id).collect { |c| [c.name.downcase, c.id] }.unshift([l(:charts_condition_all), 0])]
-        end
-      end
-      @date_condition = show_date_condition
+    @show_conditions = false
+
+    if show_date_condition
+      @date_condition = true
       @show_conditions = true
     else
-      @show_conditions = false
+      @date_condition = false
     end
+
+    unless get_grouping_options.empty?
+      @grouping_options = RedmineCharts::GroupingUtils.to_options(get_grouping_options)
+      @show_conditions = true
+    else
+      @grouping_options = []
+    end
+
+    unless get_conditions_options.empty?
+      @conditions_options = RedmineCharts::ConditionsUtils.to_options(get_conditions_options, params[:project_id])
+      @show_conditions = true
+    else
+      @conditions_options = []
+    end
+
     @help = get_help
     @title = get_title
     
@@ -39,38 +47,38 @@ class ChartsController < ApplicationController
     grouping = RedmineCharts::GroupingUtils.from_params(params)
     conditions = RedmineCharts::ConditionsUtils.from_params(params, get_conditions_options)
 
-    x_labels, x_count, y_max, sets = get_data(conditions, grouping, range)
+    labels, count, max, sets = get_data(conditions, grouping, range)
 
     index = 0
 
     converter = get_converter
 
     sets.each do |name,values|
-      chart.add_element(converter.convert(index,name,values,x_labels))
+      chart.add_element(converter.convert(index,name,values,labels))
       index += 1
     end
        
     if show_y_axis
       y = YAxis.new
-      y.set_range(0,y_max*1.2,y_max/5) if y_max
+      y.set_range(0,max*1.2,max/5) if max
       chart.y_axis = y
     end
 
     if show_x_axis
       x = XAxis.new
-      x.set_range(0,x_count,1) if x_count
-      if x_labels        
-        labels = []         
-        step = (x_labels.size/5).to_i
+      x.set_range(0,count,1) if count
+      if labels
+        labels2 = []
+        step = (labels.size/5).to_i
         step = 1 if step == 0
-        x_labels.each_with_index do |l,i|          
+        labels.each_with_index do |l,i|
           if i % step == 0
-            labels << l
+            labels2 << l
           else 
-            labels << ""
+            labels2 << ""
           end
         end
-        x.set_labels(labels) 
+        x.set_labels(labels2)
       end
       chart.x_axis = x
     else
@@ -80,15 +88,15 @@ class ChartsController < ApplicationController
     end
 
     unless get_x_legend.nil?
-      x_legend = XLegend.new(get_x_legend)
-      x_legend.set_style('{font-size: 12px}')
-      chart.set_x_legend(x_legend)
+      legend = XLegend.new(get_x_legend)
+      legend.set_style('{font-size: 12px}')
+      chart.set_x_legend(legend)
     end
     
     unless get_x_legend.nil?
-      y_legend = YLegend.new(get_y_legend)
-      y_legend.set_style('{font-size: 12px}')
-      chart.set_y_legend(y_legend)
+      legend = YLegend.new(get_y_legend)
+      legend.set_style('{font-size: 12px}')
+      chart.set_y_legend(legend)
     end
 
     chart.set_bg_colour('#ffffff');
@@ -96,7 +104,8 @@ class ChartsController < ApplicationController
     render :text => chart.to_s
   end
 
-  def get_sets(rows, grouping, x_count, flat = false)
+  # TODO Move it outside this class
+  def get_sets(rows, grouping, count, flat = false)
     if rows.empty?
       [nil, {}]
     end
@@ -111,7 +120,7 @@ class ChartsController < ApplicationController
       else
         group_name = RedmineCharts::GroupingUtils.to_string(r.group_id, grouping)
       end
-      sets[group_name] ||= Array.new(x_count, [0, get_hints])
+      sets[group_name] ||= Array.new(count, [0, get_hints])
 
       if r.value_x
         i = r.value_x.to_i
@@ -190,17 +199,19 @@ class ChartsController < ApplicationController
 
   private
 
+  # Returns converter for given chart type
   def get_converter
     eval("RedmineCharts::#{get_type.to_s.camelize}DataConverter")
   end
 
-  # Find current project or raise 404
+  # Finds current project or raises 404
   def find_project
     @project = Project.find(params[:project_id])
   rescue ActiveRecord::RecordNotFound
     render_404
   end
 
+  # Checks and sets default params values
   def check_params
     RedmineCharts::RangeUtils.set_params(params)
   end

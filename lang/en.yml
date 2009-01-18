@@ -3,7 +3,7 @@ charts_link_groups: Logged hours ratio
 charts_link_hours: Logged hours timeline
 charts_link_burndown: Burndown
 charts_link_deviation: Logged hours deviations
-charts_show_last: Show last
+charts_show_last: Show
 charts_show_last_days: days
 charts_show_last_weeks: weeks
 charts_show_last_months: months
@@ -56,3 +56,6 @@ charts_deviation_hint_label: "issue #%d, %s"
 charts_deviation_group_logged: logged hours
 charts_deviation_group_remaining: remaining hours
 charts_deviation_help: "Chart shows, for every issue, logged and remaining hours in the ratio of estimated hours. This ratio should be lower or equal to 100%%."
+
+charts_earlier: "&laquo; Earlier"
+charts_later: "Later &raquo;"

@@ -2,6 +2,7 @@
 
 <% content_for :header_tags do %>
   <%= javascript_include_tag '/plugin_assets/open_flash_chart/javascripts/swfobject.js' %>
+  <%= javascript_include_tag '/plugin_assets/redmine_charts/javascripts/charts.js' %>
 <% end %>
 
 <h2><%=l(:charts_menu_label)%>
@@ -15,11 +16,13 @@
 <% if @show_conditions %>
     <div class="splitcontentleft" style="width:30%">        
         <% form_tag '#', :method => :get do %>
-          <div class="box">
+          <div class="box" style="text-align:center">
               <% if @date_condition %>
-                <p><%= show_date_condition(params[:range_steps], params[:range_in]) %></p>
+                <p><%= show_date_condition(params[:range_steps], params[:range_in], params[:range_offset]) %></p>
               <% end %>
-              <% unless @grouping_options.empty? %>
+          </div>
+          <div class="box">
+          <% unless @grouping_options.empty? %>
                 <p><%= l(:charts_group_by) %> <%= select_tag :grouping, options_for_select(@grouping_options, params[:grouping] ? params[:grouping].to_sym : nil) %></p>
               <% end %>
               <% @conditions_options.each do |condition| %>
