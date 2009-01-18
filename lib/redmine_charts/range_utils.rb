@@ -26,7 +26,7 @@ module RedmineCharts
     def self.count_range(range, first_time)
       case range[:in]
       when :weeks
-        strftime_i = "%W"
+        strftime_i = "%U"
         items_in_year = 52
       when :months
         strftime_i = "%m"
@@ -47,31 +47,56 @@ module RedmineCharts
     def self.prepare_range(range, column = "created_on")
       case range[:in]
       when :weeks
-        strftime_i = "%W"
-        strftime_f = "%Y-%W"
+        strftime_i = "%U"
       when :months
         strftime_i = "%m"
-        strftime_f = "%Y-%m"
       else
         strftime_i = "%j"
-        strftime_f = "%Y-%m-%d"
       end
 
       from = times_ago(range[:steps],range[:offset],0,range[:in])
       to = times_ago(range[:steps],range[:offset]-1,0,range[:in])
 
       dates = []
-      x_labels = []
+      labels = []
 
       range[:steps].times do |i|
-        x_labels[i] = times_ago(range[:steps],range[:offset],i,range[:in]).strftime(strftime_f)
+        labels[i] = label(range[:steps],range[:offset],i,range[:in])
         dates[i] = times_ago(range[:steps],range[:offset],i+1,range[:in])
       end
 
       diff = from.strftime(strftime_i).to_i + from.strftime('%Y').to_i
       sql = ActiveRecord::Base.format_date(range[:in], column, diff)
 
-      [from, to, x_labels, range[:steps], sql, dates]
+      [from, to, labels, range[:steps], sql, dates]
+    end
+
+    def self.label(steps, offset, i, type)
+      time = times_ago(steps,offset,i,type)
+
+      if type == :months
+        return time.strftime("%b %y")
+      elsif type == :days
+        return time.strftime("%d %b %y")
+      else
+        year = time.strftime("%y")
+        month = time.strftime("%b")
+        day = time.strftime("%d").to_i
+
+        time2 = times_ago(steps,offset,i+1,type)
+
+        year2 = time2.strftime("%y")
+        month2 = time2.strftime("%b")
+        day2 = time2.strftime("%d").to_i - 1
+
+        if year2 != year
+          return "#{day} #{month} #{year} - #{day2} #{month2} #{year2}"
+        elsif month2 != month
+          return "#{day} #{month} - #{day2} #{month2} #{year}"
+        else
+          return "#{day} - #{day2} #{month} #{year}"
+        end
+      end
     end
 
     def self.times_ago(steps, offset, i, type)
