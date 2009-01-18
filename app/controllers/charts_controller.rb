@@ -59,13 +59,8 @@ class ChartsController < ApplicationController
 
     index = 0
 
-    converter = get_converter
-
-    sets.each do |name,values|
-      chart.add_element(converter.convert(index,name,values,labels))
-      index += 1
-    end
-       
+    get_converter.convert(chart, sets, labels)
+   
     if show_y_axis
       y = YAxis.new
       y.set_range(0,max*1.2,max/5) if max
@@ -140,7 +135,7 @@ class ChartsController < ApplicationController
       y_max = r.value_y.to_i if y_max < r.value_y.to_i
     end
 
-    [y_max, sets]
+    [y_max, sets.collect { |name, values| [name, values] }]
   end
 
   protected

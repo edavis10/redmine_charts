@@ -1,7 +1,7 @@
 module RedmineCharts
   module Utils
 
-    @@colors = ['#DFC329', '#6363AC', '#5E4725', "#d01f3c", "#356aa0", "#C79810"]
+    @@colors = ['#80C31C', '#FF7900', '#00477F', '#DFC329', '#37414A', '#6363AC', '#4C88BE', '#5E4725', "#d01f3c", "#356aa0", "#C79810"]
 
     @@controllers = %w{burndown groups hours deviation}.collect { |name| [name.to_sym, "charts_#{name}".to_sym] }
 

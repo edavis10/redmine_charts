@@ -12,9 +12,12 @@ class ChartsDeviationController < ChartsController
     max = 0
     logged_values = []
     remaining_values = []
-    sets = {}
+    sets = []
 
     rows.each_with_index do |row,i|
+      remaining_value = nil
+      logged_value = nil
+
       labbels << l(:charts_deviation_hint_label, row.id, row.subject)
       logged = Integer(row.logged_hours.to_f/row.estimated_hours.to_f*100)
       if row.done_ratio == 100
@@ -29,28 +32,27 @@ class ChartsDeviationController < ChartsController
       end
       if logged > 0
         if logged > 100 and remaining == 0
-          logged_values << [logged, l(:charts_deviation_hint_logged_over_estimation, row.logged_hours.to_i, row.logged_hours.to_i-row.estimated_hours.to_i, logged - 100) << l(:charts_deviation_hint_issue, row.estimated_hours, row.done_ratio)]
+          logged_value = [logged, l(:charts_deviation_hint_logged_over_estimation, row.logged_hours.to_i, row.logged_hours.to_i-row.estimated_hours.to_i, logged - 100) << l(:charts_deviation_hint_issue, row.estimated_hours, row.done_ratio)]
         else
-          logged_values << [logged, l(:charts_deviation_hint_logged, row.logged_hours.to_i) << l(:charts_deviation_hint_issue, row.estimated_hours, row.done_ratio)]
+          logged_value = [logged, l(:charts_deviation_hint_logged, row.logged_hours.to_i) << l(:charts_deviation_hint_issue, row.estimated_hours, row.done_ratio)]
         end
-      else
-        logged_values << nil
       end
       if remaining > 0
         if logged + remaining > 100
-          remaining_values << [remaining, l(:charts_deviation_hint_remaining_over_estimation, remaining_hours, row.logged_hours.to_i+remaining_hours.to_i-row.estimated_hours.to_i, logged + remaining - 100) << l(:charts_deviation_hint_issue, row.estimated_hours, row.done_ratio)]
+          remaining_value = [remaining, l(:charts_deviation_hint_remaining_over_estimation, remaining_hours, row.logged_hours.to_i+remaining_hours.to_i-row.estimated_hours.to_i, logged + remaining - 100) << l(:charts_deviation_hint_issue, row.estimated_hours, row.done_ratio)]
         else
-          remaining_values << [remaining, l(:charts_deviation_hint_remaining, remaining_hours) << l(:charts_deviation_hint_issue, row.estimated_hours, row.done_ratio)]
+          remaining_value = [remaining, l(:charts_deviation_hint_remaining, remaining_hours) << l(:charts_deviation_hint_issue, row.estimated_hours, row.done_ratio)]
         end
-      else
-        remaining_values << nil
       end
-      max = remaining if max < remaining
-      max = logged if max < logged
+      if remaining_value or logged_value
+        logged_values << logged_value
+        remaining_values << remaining_value
+        max = remaining + logged if max < remaining + logged
+      end
     end
 
-    sets[l(:charts_deviation_group_logged)] = logged_values
-    sets[l(:charts_deviation_group_remaining)] = remaining_values
+    sets << [l(:charts_deviation_group_logged), logged_values]
+    sets << [l(:charts_deviation_group_remaining), remaining_values]
 
     [labbels, rows.size, max, sets]
   end

@@ -61,12 +61,12 @@ class ChartsBurndownController < ChartsController
       y_max = hours if y_max < hours
     end
 
-    sets = {
-      l(:charts_burndown_group_estimated) => estimated,
-      l(:charts_burndown_group_logged) => logged,
-      l(:charts_burndown_group_remaining) => remaining,
-      l(:charts_burndown_group_predicted) => predicted,
-    }
+    sets = [
+      [l(:charts_burndown_group_estimated), estimated],
+      [l(:charts_burndown_group_logged), logged],
+      [l(:charts_burndown_group_remaining), remaining],
+      [l(:charts_burndown_group_predicted), predicted],
+    ]
 
     [x_labels, x_count, y_max, sets]
   end

@@ -3,27 +3,47 @@ module RedmineCharts
 
     include GLoc
 
-    def self.convert(index,name,values,labels)
-      bar = OpenFlashChart::Bar.new
-      bar.text = (name == '0') ? l(:charts_group_all) : name
-      bar.colour = RedmineCharts::Utils.color(index)
+    def self.convert(chart, sets, labels)
+      tooltip = OpenFlashChart::Tooltip.new
+      tooltip.set_hover()
+      
+      chart.set_tooltip(tooltip)
 
-      j = -1
+      bar = OpenFlashChart::BarStack.new
+      bar.colours = RedmineCharts::Utils.colors
 
-      bar.values  = values.collect do |v|
-        j += 1
-        if v.is_a? Array
-          d = OpenFlashChart::BarValue.new(v[0])
-          d.set_value(v[0])
-          d.set_tooltip("#{v[1]}<br>#{labels[j]}") unless v[1].nil?
-          d
-        else
-          v
+      values = []
+
+      sets.each_with_index do |set,i|
+        set[1].each_with_index do |v,j|
+          values[j] ||= []
+          values[j][i] = if v.is_a? Array
+            d = OpenFlashChart::BarStackValue.new(v[0], RedmineCharts::Utils.color(i))
+            d.set_value(v[0])
+            d.set_tooltip("#{v[1]}<br>#{labels[j]}") unless v[1].nil?
+            d
+          else
+            v
+          end
         end
       end
 
-      bar
+      bar.values = values
+
+      chart.add_element(bar)
     end
 
   end
 end
+
+# Fixes error with BarStackValue is OpenFlashChart ruby library
+module OpenFlashChart
+  class BarStackValue < Base
+    def initialize(val,colour, args={})
+      @val    = val
+      @colour = colour
+      super args
+    end
+  end
+end
+
