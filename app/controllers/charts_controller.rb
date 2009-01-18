@@ -10,6 +10,8 @@ class ChartsController < ApplicationController
   
   # Show main page with conditions form and chart
   def index
+    @title = get_title
+
     @show_conditions = false
 
     if show_date_condition
@@ -33,8 +35,14 @@ class ChartsController < ApplicationController
       @conditions_options = []
     end
 
-    @help = get_help
-    @title = get_title
+    @show_left_column = @show_conditions
+
+    unless get_help.blank?
+      @help = get_help
+      @show_left_column = true
+    else
+      @help = nil
+    end
     
     render :template => "charts/index"
   end
@@ -213,7 +221,7 @@ class ChartsController < ApplicationController
 
   # Checks and sets default params values
   def check_params
-    RedmineCharts::RangeUtils.set_params(params)
+    RedmineCharts::RangeUtils.set_params(params)    
   end
 
 end

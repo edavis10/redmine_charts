@@ -24,7 +24,7 @@ module ChartsHelper
     res << text_field_tag(:range_steps, range_steps, :size => 4)
     res << hidden_field_tag(:range_offset, range_offset)
     res << " "
-    res << select_tag(:range_in, options_for_select(RedmineCharts::RangeUtils.in_options, range_in))
+    res << select_tag(:range_in, options_for_select(RedmineCharts::RangeUtils.in_options, range_in.to_s))
 
     res << "<br/><br/>"
 

@@ -12,7 +12,7 @@ module RedmineCharts
     def self.set_params(params)     
       params[:range_steps] = 10 if params[:range_steps].blank?
       params[:range_offset] = 1 if params[:range_offset].blank?
-      params[:range_in] = @@in_types[0] if params[:range_in].blank?
+      params[:range_in] = :weeks if params[:range_in].blank?
     end
 
     def self.from_params(params)

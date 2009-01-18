@@ -9,13 +9,15 @@
     <span style="font-size:small"><%= show_charts_menu %></span>
 </h2>
 
-<% if @help %>
-    <div class="box"><%= @help %></div>
-<% end %>
+<% if @show_left_column %>
+    <div class="splitcontentleft" style="width:30%">
 
-<% if @show_conditions %>
-    <div class="splitcontentleft" style="width:30%">        
-        <% form_tag '#', :method => :get do %>         
+      <% if @help %>
+          <div class="box"><%= @help %></div>
+      <% end %>
+
+      <% if @show_conditions %>
+        <% form_tag '#', :method => :get do %>
           <% if @date_condition %>
             <div class="box" style="text-align:center">
               <p><%= show_date_condition(params[:range_steps], params[:range_in], params[:range_offset]) %></p>
@@ -35,11 +37,14 @@
               <% end %>
             </div>
           <% end %>
-          <%= submit_tag l(:charts_button) %>
+          <div style="text-align:center">
+            <%= submit_tag l(:charts_button) %>
+          </div>
         <% end %>
+      <% end %>
     </div>
 <% end %>
 
-<div class="splitcontentright" style="width:<%= @show_conditions ? "68%" : "100%" %>">
+<div class="splitcontentright" style="width:<%= @show_left_column ? "68%" : "100%" %>">
     <%= show_graph %>
 </div>
