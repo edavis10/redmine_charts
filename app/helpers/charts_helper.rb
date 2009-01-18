@@ -23,14 +23,8 @@ module ChartsHelper
     res = l(:charts_show_last) << " "
     res << text_field_tag(:range_steps, range_steps, :size => 4)
     res << " "
-    res << select_tag(:range_in, options_for_select(options_for_range_in, range_in))
+    res << select_tag(:range_in, options_for_select(RedmineCharts::RangeUtils.in_options, range_in))
     res
-  end
-
-  private
-
-  def options_for_range_in
-    @options_for_range_in ||= [:days, :weeks, :months].collect { |i| [l("charts_show_last_#{i}".to_sym), i] }
   end
 
 end

@@ -7,10 +7,10 @@ class ChartsHoursController < ChartsController
   def get_data(conditions, grouping , range)
     unless range[:steps] and range[:steps] > 0 and range[:offset]
         first = TimeEntry.find(:first, :conditions => conditions, :order => :spent_on)
-        range = count_range(range, first.spent_on) if first
+        range = RedmineCharts::RangeUtils.count_range(range, first.spent_on) if first
     end
 
-    from, to, x_labels, x_count, range, dates = prepare_range(range, "spent_on")
+    from, to, x_labels, x_count, range, dates = RedmineCharts::RangeUtils.prepare_range(range, "spent_on")
 
     conditions[:spent_on] = (from.to_date)...(to.to_date)
 

@@ -7,6 +7,9 @@ require_dependency 'redmine_charts/line_data_converter'
 require_dependency 'redmine_charts/pie_data_converter'
 require_dependency 'redmine_charts/stack_data_converter'
 require_dependency 'redmine_charts/utils'
+require_dependency 'redmine_charts/conditions_utils'
+require_dependency 'redmine_charts/grouping_utils'
+require_dependency 'redmine_charts/range_utils'
 
 Redmine::Plugin.register :charts_plugin do
   name 'Charts Plugin'

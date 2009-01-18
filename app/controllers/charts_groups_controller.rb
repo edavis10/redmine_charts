@@ -57,7 +57,7 @@ class ChartsGroupsController < ChartsController
   def get_hints(record = nil, grouping = nil)
     unless record.nil?
       if record.group_id.to_i > 0
-        l(:charts_groups_hint, group_id_to_string(record.group_id, grouping))
+        l(:charts_groups_hint, RedmineCharts::GroupingUtils.to_string(record.group_id, grouping))
       else
         l(:charts_groups_hint_others)
       end
@@ -75,11 +75,7 @@ class ChartsGroupsController < ChartsController
   end
   
   def get_type
-    "pie"
-  end
-  
-  def get_global_hints
-    l(:charts_groups_global_hint)    
+    :pie
   end
   
 end

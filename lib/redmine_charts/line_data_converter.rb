@@ -8,7 +8,7 @@ module RedmineCharts
       line.text = (name == '0') ? l(:charts_group_all) : name
       line.width = 2
       line.colour = RedmineCharts::Utils.color(index)
-      line.dot_size = 2
+      line.dot_size =  2
 
       j = -1
 

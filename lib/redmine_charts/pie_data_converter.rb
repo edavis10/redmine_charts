@@ -3,7 +3,7 @@ module RedmineCharts
 
     def self.convert(index,name,values,labels)
       pie = OpenFlashChart::Pie.new
-      #pie.tooltip = get_global_hints
+      #pie.tooltip = get_hints
       pie.start_angle = 35
       pie.animate = true
       pie.colours = RedmineCharts::Utils.colors

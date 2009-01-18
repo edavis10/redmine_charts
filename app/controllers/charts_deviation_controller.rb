@@ -64,7 +64,7 @@ class ChartsDeviationController < ChartsController
   end
   
   def get_type
-    "stack"
+    :stack
   end
   
   def get_x_legend
@@ -83,8 +83,16 @@ class ChartsDeviationController < ChartsController
     true
   end
   
-  def show_conditions
+  def show_date_condition
     false
+  end
+
+  def get_grouping_options
+    []
+  end
+
+  def get_conditions_options
+    []
   end
   
 end

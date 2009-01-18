@@ -12,9 +12,9 @@ class ChartsBurndownController < ChartsController
     f = Issue.minimum(:created_on, :conditions => { :project_id => conditions[:project_id]})
     first_date = f if f and f < first_date
 
-    range = count_range({:in => :days, :offset => 1}, first_date.to_time)
+    range = RedmineCharts::RangeUtils.count_range({:in => :days, :offset => 1}, first_date.to_time)
 
-    from, to, x_labels, x_count, range, dates = prepare_range(range, "start_date")
+    from, to, x_labels, x_count, range, dates = RedmineCharts::RangeUtils.prepare_range(range, "start_date")
 
     estimated = []
     logged = []
@@ -79,10 +79,6 @@ class ChartsBurndownController < ChartsController
     l(:charts_burndown_help)
   end
   
-  def get_type
-    "line"
-  end
-  
   def get_x_legend
     l(:charts_burndown_x)
   end
@@ -97,10 +93,6 @@ class ChartsBurndownController < ChartsController
   
   def show_y_axis
     true
-  end
-  
-  def show_conditions
-    false
   end
   
   def show_date_condition
