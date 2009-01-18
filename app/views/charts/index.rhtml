@@ -15,14 +15,15 @@
 
 <% if @show_conditions %>
     <div class="splitcontentleft" style="width:30%">        
-        <% form_tag '#', :method => :get do %>
-          <div class="box" style="text-align:center">
-              <% if @date_condition %>
-                <p><%= show_date_condition(params[:range_steps], params[:range_in], params[:range_offset]) %></p>
-              <% end %>
-          </div>
-          <div class="box">
-          <% unless @grouping_options.empty? %>
+        <% form_tag '#', :method => :get do %>         
+          <% if @date_condition %>
+            <div class="box" style="text-align:center">
+              <p><%= show_date_condition(params[:range_steps], params[:range_in], params[:range_offset]) %></p>
+            </div>
+          <% end %>
+          <% unless @grouping_options.empty? and @conditions_options.empty? %>
+            <div class="box">
+              <% unless @grouping_options.empty? %>
                 <p><%= l(:charts_group_by) %> <%= select_tag :grouping, options_for_select(@grouping_options, params[:grouping] ? params[:grouping].to_sym : nil) %></p>
               <% end %>
               <% @conditions_options.each do |condition| %>
@@ -32,7 +33,8 @@
                   <p><%= l("charts_condition_#{condition[0]}".to_sym) %> <%= select_tag "conditions_#{condition[0]}".to_sym, options_for_select(condition[1], params["conditions_#{condition[0]}".to_sym] ? Integer(params["conditions_#{condition[0]}".to_sym]) : nil) %></p>
                 <% end %>
               <% end %>
-          </div>
+            </div>
+          <% end %>
           <%= submit_tag l(:charts_button) %>
         <% end %>
     </div>
