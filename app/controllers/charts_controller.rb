@@ -61,7 +61,7 @@ class ChartsController < ApplicationController
    
     if show_y_axis
       y = YAxis.new
-      y.set_range(0,max*1.2,max/5) if max
+      y.set_range(0,max*1.2,max/get_y_axis_steps) if max
       chart.y_axis = y
     end
 
@@ -70,10 +70,8 @@ class ChartsController < ApplicationController
       x.set_range(0,count,1) if count
       if labels
         labels2 = []
-        step = (labels.size/5).to_i
-        step = 1 if step == 0
         labels.each_with_index do |l,i|
-          if i % step == 0
+          if i % get_x_axis_steps == 0
             labels2 << l
           else 
             labels2 << ""
@@ -178,9 +176,19 @@ class ChartsController < ApplicationController
     false
   end
 
+  # TODO
+  def get_x_axis_steps
+    5
+  end
+
   # Returns true if Y axis should be displayed
   def show_y_axis
     false
+  end
+
+  # TODO
+  def get_y_axis_steps
+    5
   end
 
   # Returns true if date condition should be displayed

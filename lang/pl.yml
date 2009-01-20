@@ -52,9 +52,11 @@ charts_deviation_hint_logged: zaraportowano %d godzin
 charts_deviation_hint_remaining_over_estimation: pozostało %d godzin, przekroczenie wyniesie %d godziny (%d%%)
 charts_deviation_hint_remaining: pozostało %d godzin
 charts_deviation_hint_issue: <br>oszacowano na %d godzin, wykonano %d%% prac
-charts_deviation_hint_label: "zagadnienie #%d, %s"
+charts_deviation_hint_label: "<br>zagadnienie #%d, %s"
+charts_deviation_label: "#%d"
 charts_deviation_group_logged: zaraportowane godziny
 charts_deviation_group_remaining: pozostałe godziny 
+charts_deviation_group_estimated: oszacowane godziny
 charts_deviation_help: "Wykres przedstawia, dla każdego zagadnienia, stosunek godzin zaraportowanych oraz pozostałych do oszacowanych. Suma godzin zaraportowanych i pozostałych nie powinna przekraczać 100%%."
 
 charts_earlier: "&laquo; Wcześniej"

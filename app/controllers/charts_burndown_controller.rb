@@ -5,27 +5,27 @@ class ChartsBurndownController < ChartsController
   protected
 
   def get_data(conditions, grouping, range)
-    from, to, x_labels, x_count, range, dates = RedmineCharts::RangeUtils.prepare_range(range, "start_date")
+    from, to, labels, steps, sql, dates = RedmineCharts::RangeUtils.prepare_range(range, "start_date")
 
     estimated = []
     logged = []
     remaining = []
     predicted = []
     done = []
-    y_max = 0
+    max = 0
 
     conditions_sql = "project_id = ? and (start_date <= ? or (start_date is null and created_on <= ?))"
 
     dates.each_with_index do |date,i|
       hours = Issue.sum(:estimated_hours, :conditions => [conditions_sql, conditions[:project_id], date, date])
       estimated[i] = [hours, l(:charts_burndown_hint_estimated, hours)]
-      y_max = hours if y_max < hours
+      max = hours if max < hours
     end
 
     dates.each_with_index do |date,i|
       hours = TimeEntry.sum(:hours, :conditions => ["project_id = ? and spent_on <= ?", conditions[:project_id], date])
       logged[i] = [hours, l(:charts_burndown_hint_logged, hours)]
-      y_max = hours if y_max < hours
+      max = hours if max < hours
     end
 
     dates.each_with_index do |date,i|
@@ -45,11 +45,11 @@ class ChartsBurndownController < ChartsController
     dates.each_with_index do |date,i|
       hours = logged[i][0] + remaining[i][0]
       if hours > estimated[i][0]
-        predicted[i] = [hours, l(:charts_burndown_hint_predicted_over_estimation, hours, hours - estimated[i][0], x_labels[i]), true]
+        predicted[i] = [hours, l(:charts_burndown_hint_predicted_over_estimation, hours, hours - estimated[i][0], labels[i]), true]
       else
         predicted[i] = [hours, l(:charts_burndown_hint_predicted, hours)]
       end
-      y_max = hours if y_max < hours
+      max = hours if max < hours
     end
 
     sets = [
@@ -59,7 +59,7 @@ class ChartsBurndownController < ChartsController
       [l(:charts_burndown_group_predicted), predicted],
     ]
 
-    [x_labels, x_count, y_max, sets]
+    [labels, steps, max, sets]
   end
 
   def get_title

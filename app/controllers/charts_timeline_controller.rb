@@ -5,17 +5,12 @@ class ChartsTimelineController < ChartsController
   protected
 
   def get_data(conditions, grouping , range)
-    unless range[:steps] and range[:steps] > 0 and range[:offset]
-        first = TimeEntry.find(:first, :conditions => conditions, :order => :spent_on)
-        range = RedmineCharts::RangeUtils.count_range(range, first.spent_on) if first
-    end
-
-    from, to, x_labels, x_count, range, dates = RedmineCharts::RangeUtils.prepare_range(range, "spent_on")
+    from, to, labels, steps, sql, dates = RedmineCharts::RangeUtils.prepare_range(range, "spent_on")
 
     conditions[:spent_on] = (from.to_date)...(to.to_date)
 
     group = []
-    group << range
+    group << sql
     group << "user_id" if grouping == :users
     group << "issue_id" if grouping == :issues
     group << "project_id" if grouping == :projects
@@ -24,7 +19,7 @@ class ChartsTimelineController < ChartsController
     group = group.join(", ")
 
     select = []
-    select << "#{range} as value_x"
+    select << "#{sql} as value_x"
     select << "count(1) as count_y"
     select << "sum(hours) as value_y"
     select << "user_id as group_id" if grouping == :users
@@ -37,9 +32,9 @@ class ChartsTimelineController < ChartsController
 
     rows = TimeEntry.find(:all, :joins => "left join issues on issues.id = issue_id", :select => select, :conditions => conditions, :order => "1", :readonly => true, :group => group)
 
-    y_max, sets = get_sets(rows, grouping, x_count)
+    max, sets = get_sets(rows, grouping, steps)
 
-    [x_labels, x_count, y_max, sets]
+    [labels, steps, max, sets]
   end
 
   def get_hints(record = nil, grouping = nil)

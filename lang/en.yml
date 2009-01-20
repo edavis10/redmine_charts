@@ -52,9 +52,11 @@ charts_deviation_hint_logged: %d hours logged
 charts_deviation_hint_remaining_over_estimation: %d hours to finish, %d over estimation (%d%%)
 charts_deviation_hint_remaining: %d hours to finish
 charts_deviation_hint_issue: <br>%d hours estimated, %d%% work done
-charts_deviation_hint_label: "issue #%d, %s"
+charts_deviation_hint_label: "<br>issue #%d, %s"
+charts_deviation_label: "#%d"
 charts_deviation_group_logged: logged hours
 charts_deviation_group_remaining: remaining hours
+charts_deviation_group_estimated: estimated hours
 charts_deviation_help: "Chart shows, for every issue, logged and remaining hours in the ratio of estimated hours. This ratio should be lower or equal to 100%%."
 
 charts_earlier: "&laquo; Earlier"
