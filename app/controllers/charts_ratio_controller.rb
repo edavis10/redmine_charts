@@ -1,4 +1,4 @@
-class ChartsGroupsController < ChartsController
+class ChartsRatioController < ChartsController
 
   unloadable
   
@@ -57,9 +57,9 @@ class ChartsGroupsController < ChartsController
   def get_hints(record = nil, grouping = nil)
     unless record.nil?
       if record.group_id.to_i > 0
-        l(:charts_groups_hint, RedmineCharts::GroupingUtils.to_string(record.group_id, grouping))
+        l(:charts_ratio_hint, RedmineCharts::GroupingUtils.to_string(record.group_id, grouping))
       else
-        l(:charts_groups_hint_others)
+        l(:charts_ratio_hint_others)
       end
     else
       ""
@@ -67,11 +67,11 @@ class ChartsGroupsController < ChartsController
   end
 
   def get_title
-    l(:charts_link_groups)
+    l(:charts_link_ratio)
   end
   
   def get_help
-    l(:charts_groups_help)
+    l(:charts_ratio_help)
   end
   
   def get_type

@@ -1,6 +1,6 @@
 charts_menu_label: Wykresy
-charts_link_groups: Zaraportowanych godzin
-charts_link_hours: Zaraportowane godziny w czasie
+charts_link_ratio: Zaraportowanych godzin
+charts_link_timeline: Zaraportowane godziny w czasie
 charts_link_burndown: Burndown
 charts_link_deviation: Odchylenia oszacować
 charts_show_last: Pokaż
@@ -21,16 +21,16 @@ charts_condition_all: ---
 charts_button: Pokaż
 charts_group_all: wszystko 
 
-charts_groups_global_hint: "#val# z #total# godzin<br>#percent# z 100%%"
-charts_groups_hint: %s
-charts_groups_hint_others: Pozostałe
-charts_groups_help: "Wykres przedstawia procentowy udział zaraportowanych godzin, według użytkowników, zagadnień, aktywności lub kategorii. Opcjonalnie wynik można zawęzić do konkretnego użytkownika, zagadnienia, aktywności lub kategorii."
+charts_ratio_global_hint: "#val# z #total# godzin<br>#percent# z 100%%"
+charts_ratio_hint: %s
+charts_ratio_hint_others: Pozostałe
+charts_ratio_help: "Wykres przedstawia procentowy udział zaraportowanych godzin, według użytkowników, zagadnień, aktywności lub kategorii. Opcjonalnie wynik można zawęzić do konkretnego użytkownika, zagadnienia, aktywności lub kategorii."
 
-charts_hours_x: 
-charts_hours_y: godziny
-charts_hours_hint: %d godzin, %d wpisów
-charts_hours_hint_empty: 0 godzin
-charts_hours_help: "Wykres przedstawia ile godzin zostało zaraportowanych w zadanym przedziale czasu. Wykres może być pogrupowany i zawężony do użytkowników, zagadnień, aktywności lub kategorii."
+charts_timeline_x:
+charts_timeline_y: godziny
+charts_timeline_hint: %d godzin, %d wpisów
+charts_timeline_hint_empty: 0 godzin
+charts_timeline_help: "Wykres przedstawia ile godzin zostało zaraportowanych w zadanym przedziale czasu. Wykres może być pogrupowany i zawężony do użytkowników, zagadnień, aktywności lub kategorii."
 
 charts_burndown_x: 
 charts_burndown_y: godziny

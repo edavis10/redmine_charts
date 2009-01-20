@@ -57,8 +57,6 @@ class ChartsController < ApplicationController
 
     labels, count, max, sets = get_data(conditions, grouping, range)
 
-    index = 0
-
     get_converter.convert(chart, sets, labels)
    
     if show_y_axis

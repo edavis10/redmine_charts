@@ -1,6 +1,6 @@
 charts_menu_label: Charts
-charts_link_groups: Logged hours ratio
-charts_link_hours: Logged hours timeline
+charts_link_ratio: Logged hours ratio
+charts_link_timeline: Logged hours timeline
 charts_link_burndown: Burndown
 charts_link_deviation: Logged hours deviations
 charts_show_last: Show
@@ -21,16 +21,16 @@ charts_condition_all: ---
 charts_button: Show
 charts_group_all: all
 
-charts_groups_global_hint: "#val# from #total# hours<br>#percent# from 100%%"
-charts_groups_hint: %s
-charts_groups_hint_others: Others
-charts_groups_help: "Chart shows how much hours was logged, grouping by users, issues, activities or categories, is ratio to total logged hours. It is possible to limit data for given user, issue, category or activity."
+charts_ratio_global_hint: "#val# from #total# hours<br>#percent# from 100%%"
+charts_ratio_hint: %s
+charts_ratio_hint_others: Others
+charts_ratio_help: "Chart shows how much hours was logged, grouping by users, issues, activities or categories, is ratio to total logged hours. It is possible to limit data for given user, issue, category or activity."
 
-charts_hours_x: 
-charts_hours_y: hours
-charts_hours_hint: %d hours, %d entries
-charts_hours_hint_empty: 0 hours
-charts_hours_help: "Chart shows how much hours was logged in given time period. It is possible to group by and limit to given user, issue, category or activity."
+charts_timeline_x:
+charts_timeline_y: hours
+charts_timeline_hint: %d hours, %d entries
+charts_timeline_hint_empty: 0 hours
+charts_timeline_help: "Chart shows how much hours was logged in given time period. It is possible to group by and limit to given user, issue, category or activity."
 
 charts_burndown_x: 
 charts_burndown_y: hours

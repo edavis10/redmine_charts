@@ -1,4 +1,4 @@
-class ChartsHoursController < ChartsController
+class ChartsTimelineController < ChartsController
 
   unloadable
   
@@ -44,30 +44,30 @@ class ChartsHoursController < ChartsController
 
   def get_hints(record = nil, grouping = nil)
     unless record.nil?
-      l(:charts_hours_hint, record.value_y.to_i, record.count_y.to_i)
+      l(:charts_timeline_hint, record.value_y.to_i, record.count_y.to_i)
     else
-      l(:charts_hours_hint_empty)
+      l(:charts_timeline_hint_empty)
     end
   end
 
   def get_title
-    l(:charts_link_hours)
+    l(:charts_link_timeline)
   end
   
   def get_help
-    l(:charts_hours_help)
+    l(:charts_timeline_help)
   end
   
   def get_type
-    "line"
+    :line
   end
   
   def get_x_legend
-    l(:charts_hours_x)
+    l(:charts_timeline_x)
   end
   
   def get_y_legend
-    l(:charts_hours_y)
+    l(:charts_timeline_y)
   end
   
   def show_x_axis
