@@ -121,8 +121,8 @@ class ChartsController < ApplicationController
       end
       sets[group_name] ||= Array.new(count, [0, get_hints])
 
-      if r.value_x
-        i = r.value_x.to_i
+      if r.respond_to?(:value_x) and r.value_x
+        i += r.value_x.to_i
       else
         i += 1
       end

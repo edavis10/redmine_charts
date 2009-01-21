@@ -2,18 +2,26 @@ module RedmineCharts
   module PieDataConverter
 
     def self.convert(chart, sets, labels)
+      tooltip = OpenFlashChart::Tooltip.new
+      tooltip.set_hover()
+
+      chart.set_tooltip(tooltip)
+
       sets.each do |set|
         pie = OpenFlashChart::Pie.new
-        #pie.tooltip = get_hints
         pie.start_angle = 35
         pie.animate = true
         pie.colours = RedmineCharts::Utils.colors
 
-        vals = set[1].collect do |v|
+        vals = []
+        
+        set[1].each_with_index do |v, index|
           if v.is_a? Array
-            OpenFlashChart::PieValue.new(v[0], v[1])
+            d = OpenFlashChart::PieValue.new(v[0], labels[index])
+            d.set_tooltip(v[1]) unless v[1].nil?
+            vals << d
           else
-            v
+            vals << v
           end
         end
 

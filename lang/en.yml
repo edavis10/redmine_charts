@@ -22,8 +22,10 @@ charts_button: Show
 charts_group_all: all
 
 charts_ratio_global_hint: "#val# from #total# hours<br>#percent# from 100%%"
-charts_ratio_hint: %s
-charts_ratio_hint_others: Others
+charts_ratio_label: %s
+charts_ratio_hint: "%s<br>%d (%d%%) of total %d hours"
+charts_ratio_others: Others
+charts_ratio_none: None
 charts_ratio_help: "Chart shows how much hours was logged, grouping by users, issues, activities or categories, is ratio to total logged hours. It is possible to limit data for given user, issue, category or activity."
 
 charts_timeline_x:

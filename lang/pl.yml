@@ -22,8 +22,10 @@ charts_button: Pokaż
 charts_group_all: wszystko 
 
 charts_ratio_global_hint: "#val# z #total# godzin<br>#percent# z 100%%"
-charts_ratio_hint: %s
-charts_ratio_hint_others: Pozostałe
+charts_ratio_label: %s
+charts_ratio_hint: "%s<br>%d (%d%%) z %d godzin"
+charts_ratio_others: Pozostałe
+charts_ratio_none: Brak danych
 charts_ratio_help: "Wykres przedstawia procentowy udział zaraportowanych godzin, według użytkowników, zagadnień, aktywności lub kategorii. Opcjonalnie wynik można zawęzić do konkretnego użytkownika, zagadnienia, aktywności lub kategorii."
 
 charts_timeline_x:

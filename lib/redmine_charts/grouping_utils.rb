@@ -21,15 +21,17 @@ module RedmineCharts
       options.collect { |i| [l("charts_group_by_#{i}".to_sym), i]  }
     end
 
-    def self.to_string(id, grouping)
+    def self.to_string(id, grouping, default = nil)
       if grouping == :categories and category = IssueCategory.find_by_id(id.to_i)
-        category.name
+        category.name.capitalize
       elsif grouping == :users and user = User.find_by_id(id.to_i)
-        user.login
+        user.login.capitalize
       elsif grouping == :issues and issue = Issue.find_by_id(id.to_i)
-        issue.subject
+        issue.subject.capitalize
       elsif grouping == :activities and activity = Enumeration.find_by_id(id.to_i)
-        activity.name
+        activity.name.capitalize
+      elsif default
+        default
       else
         id
       end

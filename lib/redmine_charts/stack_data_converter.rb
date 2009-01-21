@@ -20,7 +20,6 @@ module RedmineCharts
           values[j] ||= []
           values[j][i] = if v.is_a? Array
             d = OpenFlashChart::BarStackValue.new(v[0], RedmineCharts::Utils.color(i))
-            d.set_value(v[0])
             d.set_tooltip(v[1]) unless v[1].nil?
             d
           else
