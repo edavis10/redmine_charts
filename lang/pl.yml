@@ -53,7 +53,9 @@ charts_deviation_hint_remaining_over_estimation: pozostało %d godzin, przekrocz
 charts_deviation_hint_remaining: pozostało %d godzin
 charts_deviation_hint_issue: <br>oszacowano na %d godzin, wykonano %d%% prac
 charts_deviation_hint_label: "<br>zagadnienie #%d, %s"
+charts_deviation_hint_project_label: "<br>średnia dla projektu"
 charts_deviation_label: "#%d"
+charts_deviation_project_label: "projekt"
 charts_deviation_group_logged: zaraportowane godziny
 charts_deviation_group_remaining: pozostałe godziny 
 charts_deviation_group_estimated: oszacowane godziny

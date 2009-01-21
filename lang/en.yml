@@ -53,7 +53,9 @@ charts_deviation_hint_remaining_over_estimation: %d hours to finish, %d over est
 charts_deviation_hint_remaining: %d hours to finish
 charts_deviation_hint_issue: <br>%d hours estimated, %d%% work done
 charts_deviation_hint_label: "<br>issue #%d, %s"
+charts_deviation_hint_project_label: "<br>average for project"
 charts_deviation_label: "#%d"
+charts_deviation_project_label: "project"
 charts_deviation_group_logged: logged hours
 charts_deviation_group_remaining: remaining hours
 charts_deviation_group_estimated: estimated hours
