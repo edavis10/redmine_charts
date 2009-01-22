@@ -27,7 +27,7 @@ module RedmineCharts
       elsif grouping == :users and user = User.find_by_id(id.to_i)
         user.login.capitalize
       elsif grouping == :issues and issue = Issue.find_by_id(id.to_i)
-        issue.subject.capitalize
+        "##{issue.id} #{issue.subject.capitalize}"
       elsif grouping == :activities and activity = Enumeration.find_by_id(id.to_i)
         activity.name.capitalize
       elsif default

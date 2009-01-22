@@ -75,9 +75,15 @@ class ChartsDeviationController < ChartsController
     end
 
     # Project logged and remaining ratio.
-    project_done_ratio = total_done_ratio.to_f/labels.size
-    project_logged_ratio = total_logged_ratio.to_f/labels.size
-    project_remaining_ratio = total_remaining_ratio.to_f/labels.size
+    if labels.size > 0
+      project_done_ratio = total_done_ratio.to_f/labels.size
+      project_logged_ratio = total_logged_ratio.to_f/labels.size
+      project_remaining_ratio = total_remaining_ratio.to_f/labels.size
+    else
+      project_done_ratio = 0
+      project_logged_ratio = 0
+      project_remaining_ratio = 0
+    end
 
     hint = get_logged_hint(project_logged_ratio, project_remaining_ratio, project_done_ratio, total_logged_hours, total_estimated_hours)
     project_logged_value = [project_logged_ratio, hint]
@@ -94,7 +100,13 @@ class ChartsDeviationController < ChartsController
       [l(:charts_deviation_group_remaining), remaining_values]
     ]
 
-    [labels, labels.size, max, sets]
+    {
+      :labels => labels,
+      :count => labels.size,
+      :max => max,
+      :sets => sets,
+      :horizontal_line => 100
+    }
   end
 
   def get_title
@@ -121,8 +133,8 @@ class ChartsDeviationController < ChartsController
     true
   end
 
-  def get_x_axis_steps
-    1
+  def get_x_axis_labels
+    0
   end
   
   def show_y_axis
@@ -176,10 +188,12 @@ class ChartsDeviationController < ChartsController
   #
   def get_remaining_hours(logged_hours, estimated_hours, logged_ratio, remaining_ratio)
     if logged_ratio > 0
-      Integer(logged_hours.to_f/logged_ratio.to_f*remaining_ratio) + 1
+      remaining_hours = Integer(logged_hours.to_f/logged_ratio.to_f*remaining_ratio)
     else
-      Integer(estimated_hours.to_f*remaining_ratio/100) + 1
+      remaining_hours = Integer(estimated_hours.to_f*remaining_ratio/100)
     end
+    remaining_hours += 1 if remaining_hours == 0
+    remaining_hours
   end
 
   def get_remaining_hint(logged_ratio, remaining_ratio, done_ratio, logged_hours, remaining_hours, estimated_hours, row = nil)

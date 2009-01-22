@@ -1,7 +1,7 @@
 module RedmineCharts
   module Utils
 
-    @@colors = ['#80C31C', '#FF7900', '#00477F', '#DFC329', '#37414A', '#6363AC', '#4C88BE', '#5E4725', "#d01f3c", "#356aa0", "#C79810"]
+    @@colors = ['#80C31C', '#FF7900', '#6363AC', '#37414A', '#DFC329', '#00477F', '#d01f3c', '#356aa0', '#C79810', '#4C88BE', '#5E4725']
 
     @@controllers = %w{burndown ratio timeline deviation}.collect { |name| [name.to_sym, "charts_#{name}".to_sym] }
 

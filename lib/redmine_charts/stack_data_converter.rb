@@ -3,7 +3,7 @@ module RedmineCharts
 
     include GLoc
 
-    def self.convert(chart, sets, labels)
+    def self.convert(chart, data)
       tooltip = OpenFlashChart::Tooltip.new
       tooltip.set_hover()
 
@@ -15,7 +15,7 @@ module RedmineCharts
       keys = []
       values = []
 
-      sets.each_with_index do |set,i|
+      data[:sets].each_with_index do |set,i|
         set[1].each_with_index do |v,j|
           values[j] ||= []
           values[j][i] = if v.is_a? Array
@@ -34,16 +34,18 @@ module RedmineCharts
       bar.values = values
       bar.set_keys(keys)
 
-      shape = OpenFlashChart::Shape.new(RedmineCharts::Utils.color(values.size))
-      shape.values = [
-        OpenFlashChart::ShapePoint.new(-0.45, 100),
-        OpenFlashChart::ShapePoint.new(-0.55 + values.size, 100),
-        OpenFlashChart::ShapePoint.new(-0.55 + values.size, 101),
-        OpenFlashChart::ShapePoint.new(-0.45, 101),
-      ]
-
       chart.add_element(bar)
-      chart.add_element(shape)
+
+      if data[:horizontal_line]
+        shape = OpenFlashChart::Shape.new(RedmineCharts::Utils.color(values.size))
+        shape.values = [
+          OpenFlashChart::ShapePoint.new(-0.45, data[:horizontal_line]),
+          OpenFlashChart::ShapePoint.new(-0.55 + values.size, data[:horizontal_line]),
+          OpenFlashChart::ShapePoint.new(-0.55 + values.size, data[:horizontal_line] + 1),
+          OpenFlashChart::ShapePoint.new(-0.45, data[:horizontal_line] + 1),
+        ]
+        chart.add_element(shape)
+      end
     end
 
   end

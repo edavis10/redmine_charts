@@ -5,12 +5,12 @@ class ChartsTimelineController < ChartsController
   protected
 
   def get_data(conditions, grouping , range)
-    from, to, labels, steps, sql, dates = RedmineCharts::RangeUtils.prepare_range(range, "spent_on")
+    prepare_ranged = RedmineCharts::RangeUtils.prepare_range(range, "spent_on")
 
-    conditions[:spent_on] = (from.to_date)...(to.to_date)
+    conditions[:spent_on] = (prepare_ranged[:date_from])...(prepare_ranged[:date_to])
 
     group = []
-    group << sql
+    group << prepare_ranged[:sql]
     group << "user_id" if grouping == :users
     group << "issue_id" if grouping == :issues
     group << "project_id" if grouping == :projects
@@ -19,7 +19,7 @@ class ChartsTimelineController < ChartsController
     group = group.join(", ")
 
     select = []
-    select << "#{sql} as value_x"
+    select << "#{prepare_ranged[:sql]} as value_x"
     select << "count(1) as count_y"
     select << "sum(hours) as value_y"
     select << "user_id as group_id" if grouping == :users
@@ -32,9 +32,33 @@ class ChartsTimelineController < ChartsController
 
     rows = TimeEntry.find(:all, :joins => "left join issues on issues.id = issue_id", :select => select, :conditions => conditions, :order => "1", :readonly => true, :group => group)
 
-    max, sets = get_sets(rows, grouping, steps)
+    sets = {}
+    max = 0
 
-    [labels, steps, max, sets]
+    if rows.size > 0
+      rows.each do |row|
+        group_name = RedmineCharts::GroupingUtils.to_string(row.group_id, grouping)
+        index = prepare_ranged[:keys].index(row.value_x)
+        if index
+          sets[group_name] ||= Array.new(prepare_ranged[:steps], [0, get_hints])
+          sets[group_name][index] = [row.value_y.to_i, get_hints(row, grouping)]
+          max = row.value_y.to_i if max < row.value_y.to_i
+        else
+          raise row.value_x.to_s
+        end
+      end
+    else
+      sets[""] ||= Array.new(prepare_ranged[:steps], [0, get_hints])
+    end
+
+    sets = sets.collect { |name, values| [name, values] }
+
+    {
+      :labels => prepare_ranged[:labels],
+      :count => prepare_ranged[:steps],
+      :max => max,
+      :sets => sets
+    }
   end
 
   def get_hints(record = nil, grouping = nil)

@@ -55,29 +55,35 @@ class ChartsController < ApplicationController
     grouping = RedmineCharts::GroupingUtils.from_params(params)
     conditions = RedmineCharts::ConditionsUtils.from_params(params, get_conditions_options)
 
-    labels, count, max, sets = get_data(conditions, grouping, range)
+    data = get_data(conditions, grouping, range)
 
-    get_converter.convert(chart, sets, labels)
+    get_converter.convert(chart, data)
    
     if show_y_axis
       y = YAxis.new
-      y.set_range(0,max*1.2,max/get_y_axis_steps) if max
+      y.set_range(0,data[:max]*1.2,data[:max]/get_y_axis_labels) if data[:max]
       chart.y_axis = y
     end
 
     if show_x_axis
       x = XAxis.new
-      x.set_range(0,count,1) if count
-      if labels
-        labels2 = []
-        labels.each_with_index do |l,i|
-          if i % get_x_axis_steps == 0
-            labels2 << l
+      x.set_range(0,data[:count],1) if data[:count]
+      if data[:labels]
+        labels = []
+        if get_x_axis_labels > 0
+          step = (data[:labels].size/get_y_axis_labels).to_i
+          step = 1 if step == 0
+        else
+          step = 1
+        end
+        data[:labels].each_with_index do |l,i|
+          if i % step == 0
+            labels << l
           else 
-            labels2 << ""
+            labels << ""
           end
         end
-        x.set_labels(labels2)
+        x.set_labels(labels)
       end
       chart.x_axis = x
     else
@@ -101,37 +107,6 @@ class ChartsController < ApplicationController
     chart.set_bg_colour('#ffffff');
 
     render :text => chart.to_s
-  end
-
-  # TODO Move it outside this class
-  def get_sets(rows, grouping, count, flat = false)
-    if rows.empty?
-      [nil, {}]
-    end
-
-    sets = {}
-    y_max = 0
-    i = -1
-
-    rows.each do |r|
-      if flat
-        group_name = ""
-      else
-        group_name = RedmineCharts::GroupingUtils.to_string(r.group_id, grouping)
-      end
-      sets[group_name] ||= Array.new(count, [0, get_hints])
-
-      if r.respond_to?(:value_x) and r.value_x
-        i += r.value_x.to_i
-      else
-        i += 1
-      end
-
-      sets[group_name][i] = [r.value_y.to_i, get_hints(r, grouping)]
-      y_max = r.value_y.to_i if y_max < r.value_y.to_i
-    end
-
-    [y_max, sets.collect { |name, values| [name, values] }]
   end
 
   protected
@@ -176,8 +151,8 @@ class ChartsController < ApplicationController
     false
   end
 
-  # TODO
-  def get_x_axis_steps
+  # Returns how many labels should be displayed on x axis. 0 means all labels.
+  def get_x_axis_labels
     5
   end
 
@@ -186,8 +161,8 @@ class ChartsController < ApplicationController
     false
   end
 
-  # TODO
-  def get_y_axis_steps
+  # Returns how many labels should be displayed on y axis. 0 means all labels.
+  def get_y_axis_labels
     5
   end
 

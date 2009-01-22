@@ -5,7 +5,7 @@ class ChartsBurndownController < ChartsController
   protected
 
   def get_data(conditions, grouping, range)
-    from, to, labels, steps, sql, dates = RedmineCharts::RangeUtils.prepare_range(range, "start_date")
+    prepare_ranged = RedmineCharts::RangeUtils.prepare_range(range, "start_date")
 
     estimated = []
     logged = []
@@ -16,24 +16,24 @@ class ChartsBurndownController < ChartsController
 
     conditions_sql = "project_id = ? and (start_date <= ? or (start_date is null and created_on <= ?))"
 
-    dates.each_with_index do |date,i|
-      hours = Issue.sum(:estimated_hours, :conditions => [conditions_sql, conditions[:project_id], date, date])
+    prepare_ranged[:dates].each_with_index do |date,i|
+      hours = Issue.sum(:estimated_hours, :conditions => [conditions_sql, conditions[:project_id], date[1], date[1]])
       estimated[i] = [hours, l(:charts_burndown_hint_estimated, hours)]
       max = hours if max < hours
     end
 
-    dates.each_with_index do |date,i|
-      hours = TimeEntry.sum(:hours, :conditions => ["project_id = ? and spent_on <= ?", conditions[:project_id], date])
+    prepare_ranged[:dates].each_with_index do |date,i|
+      hours = TimeEntry.sum(:hours, :conditions => ["project_id = ? and spent_on <= ?", conditions[:project_id], date[1]])
       logged[i] = [hours, l(:charts_burndown_hint_logged, hours)]
       max = hours if max < hours
     end
 
-    dates.each_with_index do |date,i|
+    prepare_ranged[:dates].each_with_index do |date,i|
       hours = estimated[i][0]
-      issues = Issue.find(:all, :conditions => [conditions_sql, conditions[:project_id], date, date])
+      issues = Issue.find(:all, :conditions => [conditions_sql, conditions[:project_id], date[1], date[1]])
       total_ratio = 0
       issues.each do |issue|
-        journal = issue.journals.find(:first, :conditions => ["created_on <= ?", date], :order => "created_on desc", :select => "journal_details.value", :joins => "left join journal_details on journal_details.journal_id = journals.id and journal_details.prop_key = 'done_ratio'")
+        journal = issue.journals.find(:first, :conditions => ["created_on <= ?", date[1]], :order => "created_on desc", :select => "journal_details.value", :joins => "left join journal_details on journal_details.journal_id = journals.id and journal_details.prop_key = 'done_ratio'")
         ratio = journal ? journal.value.to_i : 0
         total_ratio += ratio
         hours -= issue.estimated_hours.to_f * ratio.to_f / 100 if issue.estimated_hours
@@ -42,10 +42,10 @@ class ChartsBurndownController < ChartsController
       remaining[i] = [hours, l(:charts_burndown_hint_remaining, hours, done[i])]
     end
 
-    dates.each_with_index do |date,i|
+    prepare_ranged[:dates].each_with_index do |date,i|
       hours = logged[i][0] + remaining[i][0]
       if hours > estimated[i][0]
-        predicted[i] = [hours, l(:charts_burndown_hint_predicted_over_estimation, hours, hours - estimated[i][0], labels[i]), true]
+        predicted[i] = [hours, l(:charts_burndown_hint_predicted_over_estimation, hours, hours - estimated[i][0], prepare_ranged[:labels][i]), true]
       else
         predicted[i] = [hours, l(:charts_burndown_hint_predicted, hours)]
       end
@@ -59,7 +59,12 @@ class ChartsBurndownController < ChartsController
       [l(:charts_burndown_group_predicted), predicted],
     ]
 
-    [labels, steps, max, sets]
+    {
+      :labels => prepare_ranged[:labels],
+      :count => prepare_ranged[:steps],
+      :max => max,
+      :sets => sets
+    }
   end
 
   def get_title

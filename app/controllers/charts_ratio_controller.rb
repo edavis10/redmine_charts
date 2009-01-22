@@ -19,7 +19,7 @@ class ChartsRatioController < ChartsController
     select << "#{group} as group_id"
     select = select.join(", ")
 
-    rows = TimeEntry.find(:all, :joins => "left join issues on issues.id = issue_id", :select => select, :conditions => conditions, :readonly => true, :group => group, :order => "sum(hours) asc")
+    rows = TimeEntry.find(:all, :joins => "left join issues on issues.id = issue_id", :select => select, :conditions => conditions, :readonly => true, :group => group, :order => "1 asc")
 
     bigger_rows = []
     total_hours = 0
@@ -62,7 +62,12 @@ class ChartsRatioController < ChartsController
       end
     end
 
-    [labels, rows.size, 0, {"" => set}]
+    {
+      :labels => labels,
+      :count => rows.size,
+      :max => 0,
+      :sets => {"" => set}
+    }
   end
 
   def get_title

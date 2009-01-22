@@ -23,85 +23,93 @@ module RedmineCharts
       }
     end
 
-    def self.count_range(range, first_time)
-      case range[:in]
-      when :weeks
-        strftime_i = "%U"
-        items_in_year = 52
-      when :months
-        strftime_i = "%m"
-        items_in_year = 12
-      else
-        strftime_i = "%j"
-        items_in_year = 366
-      end
-
-      first = first_time.strftime(strftime_i).to_i + first_time.strftime('%Y').to_i * items_in_year
-      now = Time.now.strftime(strftime_i).to_i + Time.now.strftime('%Y').to_i * items_in_year
-
-      range[:steps] = now - first + 4
-      range[:offset] = 1
-      range
-    end
-
     def self.prepare_range(range, column = "created_on")
-      case range[:in]
-      when :weeks
-        strftime_i = "%U"
-      when :months
-        strftime_i = "%m"
-      else
-        strftime_i = "%j"
+      dates = []
+
+      range[:steps].times do |i|
+        dates[i] = get_times(range[:steps],range[:offset],i,range[:in])
       end
 
-      from = times_ago(range[:steps],range[:offset],0,range[:in])
-      to = times_ago(range[:steps],range[:offset]-1,0,range[:in])
-
-      dates = []
+      keys = []
       labels = []
 
       range[:steps].times do |i|
-        labels[i] = label(range[:steps],range[:offset],i,range[:in])
-        dates[i] = times_ago(range[:steps],range[:offset],i+1,range[:in])
+        keys[i] = dates[i][0].strftime("%Y%m%d")
+        labels[i] = get_label(dates[i][0], dates[i][1], range[:in])
       end
 
-      diff = from.strftime(strftime_i).to_i + from.strftime('%Y').to_i
-      sql = ActiveRecord::Base.format_date(range[:in], column, diff)
+      sql = ActiveRecord::Base.format_date(range[:in], column)
 
-      [from, to, labels, range[:steps], sql, dates]
+      {
+        :date_from => dates[0][0].to_date,
+        :date_to => dates[dates.size-1][1].to_date,
+        :labels => labels,
+        :keys => keys,
+        :dates => dates,
+        :steps => range[:steps],
+        :sql => sql
+      }
     end
 
-    def self.label(steps, offset, i, type)
-      time = times_ago(steps,offset,i,type)
+    private
 
+    def self.get_label(from, to, type)
       if type == :months
-        return time.strftime("%b %y")
+        return from.strftime("%b %y")
       elsif type == :days
-        return time.strftime("%d %b %y")
+        return from.strftime("%d %b %y")
       else
-        year = time.strftime("%y")
-        month = time.strftime("%b")
-        day = time.strftime("%d").to_i
+        year_from = from.strftime("%y")
+        month_from = from.strftime("%b")
+        day_from = from.strftime("%d").to_i
 
-        time2 = times_ago(steps,offset,i+1,type)
+        year_to = to.strftime("%y")
+        month_to = to.strftime("%b")
+        day_to = to.strftime("%d").to_i # - 1
 
-        year2 = time2.strftime("%y")
-        month2 = time2.strftime("%b")
-        day2 = time2.strftime("%d").to_i - 1
-
-        if year2 != year
-          return "#{day} #{month} #{year} - #{day2} #{month2} #{year2}"
-        elsif month2 != month
-          return "#{day} #{month} - #{day2} #{month2} #{year}"
+        if year_from != year_to
+          return "#{day_from} #{month_from} #{year_from} - #{day_to} #{month_to} #{year_to}"
+        elsif month_from != month_to
+          return "#{day_from} #{month_from} - #{day_to} #{month_to} #{year_from}"
         else
-          return "#{day} - #{day2} #{month} #{year}"
+          return "#{day_from} - #{day_to} #{month_from} #{year_from}"
         end
       end
     end
 
-    def self.times_ago(steps, offset, i, type)
-      ((steps*offset)-i-1).send(type).ago
+    def self.get_times(steps, offset, i, type)
+      if type == :months
+        time = ((steps*offset)-i-1).send(type).ago
+        [
+          Time.mktime(time.year, time.month, 1, 0, 0, 0),
+          Time.mktime(time.year, time.month, get_days_in_month(time.year, time.month), 23, 59, 59)
+        ]
+      elsif type == :days
+        time = ((steps*offset)-i-1).send(type).ago
+        [
+          Time.mktime(time.year, time.month, time.day, 0, 0, 0),
+          Time.mktime(time.year, time.month, time.day, 23, 59, 59)
+        ]
+      else
+        time = ((steps*offset)-i-1).send(type).ago
+        day_of_week = time.strftime('%w').to_i - 1
+        day_of_week = 7 if day_of_week < 0
+        time -= day_of_week.days
+        time2 = time + 6.days
+        [
+          Time.mktime(time.year, time.month, time.day, 0, 0, 0),
+          Time.mktime(time2.year, time2.month, time2.day, 23, 59, 59)
+        ]
+      end
     end
 
+    def self.get_days_in_month(year, month)
+      if month == 2 and ((year % 4 == 0 and year % 100 != 0) or (year % 400 == 0))
+        29
+      else
+        [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month - 1]
+      end
+    end
+    
   end
 end

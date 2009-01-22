@@ -3,10 +3,10 @@ module RedmineCharts
 
     include GLoc
 
-    def self.convert(chart, sets, labels)
+    def self.convert(chart, data)
       index = 0
 
-      sets.each do |set|
+      data[:sets].each do |set|
         line = OpenFlashChart::LineDot.new
         line.text = (set[0] == '0') ? l(:charts_group_all) : set[0]
         line.width = 2
@@ -24,7 +24,7 @@ module RedmineCharts
               d.dot_size = 4
             end
             d.set_colour(RedmineCharts::Utils.color(index))
-            d.set_tooltip("#{v[1]}<br>#{labels[j]}") unless v[1].nil?
+            d.set_tooltip("#{v[1]}<br>#{data[:labels][j]}") unless v[1].nil?
             d
           else
             v
