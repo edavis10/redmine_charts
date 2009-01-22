@@ -28,7 +28,7 @@ module RedmineCharts
       def format_date(format, column)
         case format
         when :weeks
-          "(case when strftime('%d', #{column}) < strftime('%w', #{column}) then strftime('%Y%m%d', date(#{column}, '-7 day')) - strftime('%w', #{column}) + 8 else strftime('%Y%m%d', #{column}) - strftime('%w', #{column}) + 1 end)"
+          "(case when cast(strftime('%d', #{column}) as 'integer') < strftime('%w', #{column}) then strftime('%Y%m%d', date(#{column}, '-7 day')) - strftime('%w', #{column}) + 8 else strftime('%Y%m%d', #{column}) - strftime('%w', #{column}) + 1 end)"
         when :months
           "strftime('%Y%m01', #{column})"
         else
