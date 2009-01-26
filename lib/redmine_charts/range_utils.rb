@@ -65,7 +65,7 @@ module RedmineCharts
 
         year_to = to.strftime("%y")
         month_to = to.strftime("%b")
-        day_to = to.strftime("%d").to_i # - 1
+        day_to = to.strftime("%d").to_i
 
         if year_from != year_to
           return "#{day_from} #{month_from} #{year_from} - #{day_to} #{month_to} #{year_to}"
@@ -92,8 +92,7 @@ module RedmineCharts
         ]
       else
         time = ((steps*offset)-i-1).send(type).ago
-        day_of_week = time.strftime('%w').to_i - 1
-        day_of_week = 7 if day_of_week < 0
+        day_of_week = time.strftime('%w').to_i
         time -= day_of_week.days
         time2 = time + 6.days
         [
