@@ -26,13 +26,13 @@ charts_ratio_label: %s
 charts_ratio_hint: "%s<br>%d (%d%%) of total %d hours"
 charts_ratio_others: Others
 charts_ratio_none: None
-charts_ratio_help: "Chart shows how much hours was logged, grouping by users, issues, activities or categories, is ratio to total logged hours. It is possible to limit data for given user, issue, category or activity."
+charts_ratio_help: "Chart shows how many hours was logged proportional to total logged ones, grouping and limiting them by users, issues, activities or categories."
 
 charts_timeline_x:
 charts_timeline_y: hours
 charts_timeline_hint: %d hours, %d entries
 charts_timeline_hint_empty: 0 hours
-charts_timeline_help: "Chart shows how much hours was logged in given time period. It is possible to group by and limit to given user, issue, category or activity."
+charts_timeline_help: "Chart shows timeline with logged hours, grouping and limiting them by users, issues, activities or categories."
 
 charts_burndown_x: 
 charts_burndown_y: hours
@@ -45,7 +45,7 @@ charts_burndown_group_estimated: estimated hours
 charts_burndown_group_logged: logged hours
 charts_burndown_group_remaining: remaining hours
 charts_burndown_group_predicted: predicted (remaining + logged) hours
-charts_burndown_help: "Chart shows timeline with estimated, logged and remaining hours changes."
+charts_burndown_help: "Chart shows timeline with estimated, logged and remaining hours."
 
 charts_deviation_x: issues
 charts_deviation_y: %% ratio to estimated hours
@@ -61,7 +61,7 @@ charts_deviation_project_label: "project"
 charts_deviation_group_logged: logged hours
 charts_deviation_group_remaining: remaining hours
 charts_deviation_group_estimated: estimated hours
-charts_deviation_help: "Chart shows, for every issue, logged and remaining hours in the ratio of estimated hours. This ratio should be lower or equal to 100%%."
+charts_deviation_help: "Chart shows, for every estimated issue, logged and remaining hours in the ratio of estimated ones. This ratio should be lower or equal to 100%%. Only estimated issues are displayed. Firts bar presents average data for project."
 
 charts_earlier: "&laquo; Earlier"
 charts_later: "Later &raquo;"
