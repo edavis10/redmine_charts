@@ -20,25 +20,25 @@ Run Redmine and have a fun!
 
 ### Burndown
 
-Chart shows timeline with estimated, logged and remaining hours.
+Timeline with estimated, logged and remaining hours.
 
 ![Screenshot of hours chart](http://farm4.static.flickr.com/3487/3219872709_03a137e740_o.jpg)
 
 ### Logged hours ratio
 
-Chart shows how many hours was logged proportional to total logged ones, grouping and limiting them by users, issues, activities or categories.
+Number of hours were logged proportional to total total, grouped and filtered by users, issues, activities or categories.
 
 ![Screenshot of groups chart](http://farm4.static.flickr.com/3313/3220723922_64540005a0_o.jpg)
 
 ### Logged hours timeline
 
-Chart shows timeline with logged hours, grouping and limiting them by users, issues, activities or categories.
+Timeline with logged hours, grouped and filtered by users, issues, activities or categories.
 
 ![Screenshot of hours chart](http://farm4.static.flickr.com/3112/3220723804_2b274e7e2f_o.jpg)
 
 ### Logged hours deviations
 
-Chart shows, for every estimated issue, logged and remaining hours in the ratio of estimated ones.
+Ratio of logged and remaining hours to estimated hours for each estimated issue.
 
 ![Screenshot of deviations chart](http://farm4.static.flickr.com/3441/3219872389_4f1d105c1d_o.jpg)
 
